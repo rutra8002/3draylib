@@ -10,6 +10,8 @@ public:
     void SetTarget(Vector3 target);
     void BeginMode3D();
     void EndMode3D();
+    void SetPositionBehindPlayer(Vector3 playerPosition);
+    void SetTargetToPlayer(Vector3 playerPosition);
 
 private:
     Camera camera;

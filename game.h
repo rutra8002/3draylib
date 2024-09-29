@@ -17,7 +17,7 @@ private:
 
     Player player;
     Camera3DWrapper camera;
-    Map map; // Add Map object
+    Map map;
 };
 
 #endif

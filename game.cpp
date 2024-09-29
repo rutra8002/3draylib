@@ -6,7 +6,7 @@ Game::Game() {
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
     camera.SetTarget({0.0f, 0.0f, 0.0f});
-    map.Initialize(); // Initialize the map
+    map.Initialize();
 }
 
 Game::~Game() {
@@ -24,7 +24,8 @@ void Game::Run() {
 
 void Game::Update(float deltaTime) {
     player.Update(deltaTime);
-    camera.SetPosition(player.GetPosition());
+    camera.SetPositionBehindPlayer(player.GetPosition());
+    camera.SetTargetToPlayer(player.GetPosition());
 }
 
 void Game::Draw() {
@@ -34,7 +35,7 @@ void Game::Draw() {
     camera.BeginMode3D();
 
     player.Draw();
-    map.Draw(); // Draw the map cubes
+    map.Draw();
 
     DrawGrid(10, 1.0f);
 
