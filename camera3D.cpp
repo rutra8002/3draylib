@@ -36,3 +36,11 @@ void Camera3DWrapper::BeginMode3D() {
 void Camera3DWrapper::EndMode3D() {
     ::EndMode3D();
 }
+
+Vector3 Camera3DWrapper::GetPosition() const {
+    return camera.position;
+}
+
+Vector3 Camera3DWrapper::GetTarget() const {
+    return camera.target;
+}

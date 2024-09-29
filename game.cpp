@@ -69,5 +69,17 @@ void Game::Draw() {
 #ifdef DEBUG_MODE
 void Game::DrawDebugMenu() {
     DrawText("DEBUG MENU", 10, 50, 20, RED);
+
+    Vector3 playerPos = player.GetPosition();
+    DrawText(TextFormat("Player Position: [X: %.2f, Y: %.2f, Z: %.2f]", playerPos.x, playerPos.y, playerPos.z), 10, 80, 20, DARKGRAY);
+
+    float playerRot = player.GetRotation();
+    DrawText(TextFormat("Player Rotation: %.2f", playerRot), 10, 110, 20, DARKGRAY);
+
+    Vector3 cameraPos = camera.GetPosition();
+    DrawText(TextFormat("Camera Position: [X: %.2f, Y: %.2f, Z: %.2f]", cameraPos.x, cameraPos.y, cameraPos.z), 10, 140, 20, DARKGRAY);
+
+    Vector3 cameraTarget = camera.GetTarget();
+    DrawText(TextFormat("Camera Target: [X: %.2f, Y: %.2f, Z: %.2f]", cameraTarget.x, cameraTarget.y, cameraTarget.z), 10, 170, 20, DARKGRAY);
 }
 #endif
