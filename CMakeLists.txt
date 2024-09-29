@@ -31,7 +31,9 @@ add_executable(${PROJECT_NAME} main.cpp
         camera3D.cpp
         camera3D.h
         map.cpp
-        map.h)
+        map.h
+        mainmenu.cpp
+        mainmenu.h)
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Set the build type to Debug by default

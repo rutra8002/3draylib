@@ -1,7 +1,8 @@
+// game.cpp
 #include "Game.h"
 #include "raylib.h"
 
-Game::Game(int width, int height) : screenWidth(width), screenHeight(height) {
+Game::Game(int width, int height) : screenWidth(width), screenHeight(height), mainMenu(width, height), inGame(false) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -17,7 +18,14 @@ Game::~Game() {
 void Game::Run() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
-        Update(deltaTime);
+        if (!inGame) {
+            mainMenu.Update();
+            if (mainMenu.IsStartGameSelected()) {
+                inGame = true;
+            }
+        } else {
+            Update(deltaTime);
+        }
         Draw();
     }
 }
@@ -29,26 +37,30 @@ void Game::Update(float deltaTime) {
 }
 
 void Game::Draw() {
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
+    if (!inGame) {
+        mainMenu.Draw();
+    } else {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-    camera.BeginMode3D();
+        camera.BeginMode3D();
 
-    player.Draw();
-    map.Draw();
+        player.Draw();
+        map.Draw();
 
-    DrawGrid(10, 1.0f);
+        DrawGrid(10, 1.0f);
 
-    camera.EndMode3D();
+        camera.EndMode3D();
 
-    DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);
-    DrawFPS(10, 10);
+        DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);
+        DrawFPS(10, 10);
 
 #ifdef DEBUG_MODE
-    DrawDebugMenu();
+        DrawDebugMenu();
 #endif
 
-    EndDrawing();
+        EndDrawing();
+    }
 }
 
 #ifdef DEBUG_MODE
