@@ -5,25 +5,50 @@ int main()
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "Hello World");
+    InitWindow(screenWidth, screenHeight, "hello world");
+    InitAudioDevice();
 
-    const char* text = "Hello World";
-    int fontSize = 20;
-    int textWidth = MeasureText(text, fontSize);
-    int textHeight = fontSize;
+    Camera camera = { 0 };
+    camera.position = (Vector3){ 0.0f, 10.0f, 10.0f };
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
+    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
+    camera.fovy = 45.0f;
+    camera.projection = CAMERA_PERSPECTIVE;
 
-    int posX = (screenWidth - textWidth) / 2;
-    int posY = (screenHeight - textHeight) / 2;
+    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
 
-    SetTargetFPS(60);
     while (!WindowShouldClose())
     {
+        float deltaTime = GetFrameTime();
+
+        // Update
+        if (IsKeyDown(KEY_RIGHT)) cubePosition.x += 10 * deltaTime;
+        if (IsKeyDown(KEY_LEFT)) cubePosition.x -= 10 * deltaTime;
+        if (IsKeyDown(KEY_UP)) cubePosition.z -= 10 * deltaTime;
+        if (IsKeyDown(KEY_DOWN)) cubePosition.z += 10 * deltaTime;
+
+        // Draw
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText(text, posX, posY, fontSize, LIGHTGRAY);
+
+        BeginMode3D(camera);
+
+        DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
+        DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+
+        DrawGrid(10, 1.0f);
+
+        EndMode3D();
+
+        DrawText("Move the cube with arrow keys", 10, 30, 20, DARKGRAY);
+
+        DrawFPS(10, 10);
+
         EndDrawing();
     }
 
     CloseWindow();
+    CloseAudioDevice();
+
     return 0;
 }
