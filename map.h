@@ -11,7 +11,11 @@ public:
     void Draw();
 
 private:
-    std::vector<Vector3> cubePositions;
+    struct Cube {
+        Vector3 position;
+        Vector3 dimensions;
+    };
+    std::vector<Cube> cubes;
 };
 
 #endif
