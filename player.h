@@ -24,6 +24,7 @@ private:
     float verticalRotation;
     float vx;
     float vy;
+    float vz;
     float gravity;
     bool isGrounded;
 };

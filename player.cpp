@@ -1,25 +1,31 @@
 #include "Player.h"
 #include "raymath.h"
 
-Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), gravity(-9.8f), isGrounded(false) {}
+Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), isGrounded(false) {}
 
 void Player::Update(float deltaTime, const Map& map) {
+    vx = 0.0f;
+    vz = 0.0f;
+
     if (IsKeyDown(KEY_D)) {
-        vx = 10 * cosf(-rotation * DEG2RAD);
-        position.x += vx * deltaTime;
+        vx += 10 * cosf(-rotation * DEG2RAD);
+        vz += 10 * sinf(-rotation * DEG2RAD);
     }
     if (IsKeyDown(KEY_A)) {
-        vx = -10 * cosf(-rotation * DEG2RAD);
-        position.x += vx * deltaTime;
+        vx -= 10 * cosf(-rotation * DEG2RAD);
+        vz -= 10 * sinf(-rotation * DEG2RAD);
     }
     if (IsKeyDown(KEY_W)) {
-        vx = 10 * sinf(-rotation * DEG2RAD);
-        position.z += vx * deltaTime;
+        vx += 10 * sinf(-rotation * DEG2RAD);
+        vz -= 10 * cosf(-rotation * DEG2RAD);
     }
     if (IsKeyDown(KEY_S)) {
-        vx = -10 * sinf(-rotation * DEG2RAD);
-        position.z += vx * deltaTime;
+        vx -= 10 * sinf(-rotation * DEG2RAD);
+        vz += 10 * cosf(-rotation * DEG2RAD);
     }
+
+    position.x += vx * deltaTime;
+    position.z += vz * deltaTime;
 
     if (!isGrounded) {
         vy += gravity * deltaTime;
