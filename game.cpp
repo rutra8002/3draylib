@@ -1,3 +1,4 @@
+// game.cpp
 #include "Game.h"
 #include "raylib.h"
 
@@ -34,6 +35,7 @@ void Game::Update(float deltaTime) {
     player.Update(deltaTime);
     camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation());
     camera.SetTargetToPlayer(player.GetPosition());
+    player.SetRotation(player.GetRotation());
 }
 
 void Game::Draw() {

@@ -1,3 +1,4 @@
+// player.h
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -11,6 +12,7 @@ public:
     void Draw();
     Vector3 GetPosition() const;
     float GetRotation() const;
+    void SetRotation(float rotation);
 
 private:
     void HandleMouseInput();
