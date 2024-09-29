@@ -1,4 +1,3 @@
-// game.cpp
 #include "Game.h"
 #include "raylib.h"
 
@@ -21,6 +20,7 @@ void Game::Run() {
         if (!inGame) {
             mainMenu.Update();
             if (mainMenu.IsStartGameSelected()) {
+                mainMenu.CenterCursor();
                 inGame = true;
             }
         } else {

@@ -1,4 +1,3 @@
-// MainMenu.cpp
 #include "MainMenu.h"
 #include "raylib.h"
 
@@ -20,4 +19,8 @@ void MainMenu::Draw() {
 
 bool MainMenu::IsStartGameSelected() const {
     return startGameSelected;
+}
+
+void MainMenu::CenterCursor() const {
+    SetMousePosition(screenWidth / 2, screenHeight / 2);
 }
