@@ -22,7 +22,14 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
     endif()
 endif()
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp
+        game.h
+        game.cpp
+        game.h
+        player.cpp
+        player.h
+        camera3D.cpp
+        camera3D.h)
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Web Configurations
