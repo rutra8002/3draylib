@@ -17,11 +17,11 @@ void Camera3DWrapper::SetTarget(Vector3 target) {
     camera.target = target;
 }
 
-void Camera3DWrapper::SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation) {
+void Camera3DWrapper::SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation) {
     Vector3 cameraPosition = playerPosition;
     cameraPosition.z += 20.0f * cosf(playerRotation * DEG2RAD);
     cameraPosition.x += 20.0f * sinf(playerRotation * DEG2RAD);
-    cameraPosition.y += 10.0f;
+    cameraPosition.y += 10.0f * sinf(playerVerticalRotation * DEG2RAD);
     SetPosition(cameraPosition);
 }
 

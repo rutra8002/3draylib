@@ -11,6 +11,7 @@ public:
     void Draw();
     Vector3 GetPosition() const;
     float GetRotation() const;
+    float GetVerticalRotation() const;
     void SetRotation(float rotation);
 
 private:
@@ -18,6 +19,7 @@ private:
 
     Vector3 position;
     float rotation;
+    float verticalRotation;
 };
 
 #endif

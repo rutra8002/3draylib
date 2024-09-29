@@ -34,7 +34,7 @@ void Game::Run() {
 
 void Game::Update(float deltaTime) {
     player.Update(deltaTime);
-    camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation());
+    camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
     camera.SetTargetToPlayer(player.GetPosition());
     player.SetRotation(player.GetRotation());
 }
@@ -81,5 +81,8 @@ void Game::DrawDebugMenu() {
 
     Vector3 cameraTarget = camera.GetTarget();
     DrawText(TextFormat("Camera Target: [X: %.2f, Y: %.2f, Z: %.2f]", cameraTarget.x, cameraTarget.y, cameraTarget.z), 10, 170, 20, DARKGRAY);
+
+    Vector2 playerRotation = {player.GetRotation(), player.GetVerticalRotation()};
+    DrawText(TextFormat("Player Rotation: [X: %.2f, Y: %.2f]", playerRotation.x, playerRotation.y), 10, 200, 20, DARKGRAY);
 }
 #endif

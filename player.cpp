@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "raymath.h"
 
-Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f) {}
+Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f) {}
 
 void Player::Update(float deltaTime) {
     if (IsKeyDown(KEY_D)) {
@@ -26,6 +26,8 @@ void Player::Update(float deltaTime) {
 
 void Player::HandleMouseInput() {
     rotation -= GetMouseDelta().x * 0.3f;
+    verticalRotation += GetMouseDelta().y * 0.3f;
+    verticalRotation = Clamp(verticalRotation, -89.0f, 89.0f); // Limit vertical rotation to avoid flipping
 }
 
 void Player::Draw() {
@@ -39,6 +41,10 @@ Vector3 Player::GetPosition() const {
 
 float Player::GetRotation() const {
     return rotation;
+}
+
+float Player::GetVerticalRotation() const {
+    return verticalRotation;
 }
 
 void Player::SetRotation(float newRotation) {
