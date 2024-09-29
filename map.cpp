@@ -16,3 +16,7 @@ void Map::Draw() {
         DrawCubeWires(cube.position, cube.dimensions.x, cube.dimensions.y, cube.dimensions.z, DARKBLUE);
     }
 }
+
+const std::vector<Map::Cube>& Map::GetCubes() const {
+    return cubes;
+}

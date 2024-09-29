@@ -33,7 +33,7 @@ void Game::Run() {
 }
 
 void Game::Update(float deltaTime) {
-    player.Update(deltaTime);
+    player.Update(deltaTime, map);
     camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
     camera.SetTargetToPlayer(player.GetPosition());
     player.SetRotation(player.GetRotation());

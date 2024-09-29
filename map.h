@@ -6,15 +6,17 @@
 
 class Map {
 public:
-    Map();
-    void Initialize();
-    void Draw();
-
-private:
     struct Cube {
         Vector3 position;
         Vector3 dimensions;
     };
+
+    Map();
+    void Initialize();
+    void Draw();
+    [[nodiscard]] const std::vector<Map::Cube>& GetCubes() const;
+
+private:
     std::vector<Cube> cubes;
 };
 

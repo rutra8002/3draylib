@@ -1,27 +1,52 @@
 #include "Player.h"
 #include "raymath.h"
 
-Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f) {}
+Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), gravity(-9.8f), isGrounded(false) {}
 
-void Player::Update(float deltaTime) {
+void Player::Update(float deltaTime, const Map& map) {
     if (IsKeyDown(KEY_D)) {
-        position.x += 10 * deltaTime * cosf(-rotation * DEG2RAD);
-        position.z += 10 * deltaTime * sinf(-rotation * DEG2RAD);
+        vx = 10 * cosf(-rotation * DEG2RAD);
+        position.x += vx * deltaTime;
     }
     if (IsKeyDown(KEY_A)) {
-        position.x -= 10 * deltaTime * cosf(-rotation * DEG2RAD);
-        position.z -= 10 * deltaTime * sinf(-rotation * DEG2RAD);
+        vx = -10 * cosf(-rotation * DEG2RAD);
+        position.x += vx * deltaTime;
     }
     if (IsKeyDown(KEY_W)) {
-        position.x += 10 * deltaTime * sinf(-rotation * DEG2RAD);
-        position.z -= 10 * deltaTime * cosf(-rotation * DEG2RAD);
+        vx = 10 * sinf(-rotation * DEG2RAD);
+        position.z += vx * deltaTime;
     }
     if (IsKeyDown(KEY_S)) {
-        position.x -= 10 * deltaTime * sinf(-rotation * DEG2RAD);
-        position.z += 10 * deltaTime * cosf(-rotation * DEG2RAD);
+        vx = -10 * sinf(-rotation * DEG2RAD);
+        position.z += vx * deltaTime;
+    }
+
+    if (!isGrounded) {
+        vy += gravity * deltaTime;
+        position.y += vy * deltaTime;
+    }
+
+    if (CheckCollisionWithMap(map)) {
+        vy = 0;
+        isGrounded = true;
+    } else {
+        isGrounded = false;
     }
 
     HandleMouseInput();
+}
+
+bool Player::CheckCollisionWithMap(const Map& map) {
+    for (const auto& cube : map.GetCubes()) {
+        if (CheckCollisionBoxes(
+            {position.x - 1.0f, position.y - 1.0f, position.z - 1.0f, position.x + 1.0f, position.y + 1.0f, position.z + 1.0f},
+            {cube.position.x - cube.dimensions.x / 2, cube.position.y, cube.position.z - cube.dimensions.z / 2, cube.position.x + cube.dimensions.x / 2, cube.position.y + cube.dimensions.y, cube.position.z + cube.dimensions.z / 2}
+        )) {
+            position.y = cube.position.y + cube.dimensions.y;
+            return true;
+        }
+    }
+    return false;
 }
 
 void Player::HandleMouseInput() {
