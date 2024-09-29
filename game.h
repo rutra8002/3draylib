@@ -1,3 +1,4 @@
+// game.h
 #ifndef GAME_H
 #define GAME_H
 
@@ -7,7 +8,7 @@
 
 class Game {
 public:
-    Game();
+    Game(int width, int height);
     ~Game();
     void Run();
 
@@ -22,6 +23,8 @@ private:
     Player player;
     Camera3DWrapper camera;
     Map map;
+    int screenWidth;
+    int screenHeight;
 };
 
 #endif
