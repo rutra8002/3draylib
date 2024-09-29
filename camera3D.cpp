@@ -1,6 +1,6 @@
 #include "Camera3D.h"
 
-Camera3DWrapper::Camera3DWrapper() {
+Camera3DWrapper::Camera3DWrapper() : camera{} {
     camera.position = {0.0f, 10.0f, 10.0f};
     camera.target = {0.0f, 0.0f, 0.0f};
     camera.up = {0.0f, 1.0f, 0.0f};
