@@ -26,10 +26,10 @@ void Player::Update(float deltaTime, const Map& map) {
 
     position.x += vx * deltaTime;
     position.z += vz * deltaTime;
+    position.y += vy * deltaTime;
 
     if (!isGrounded) {
         vy += gravity * deltaTime;
-        position.y += vy * deltaTime;
     }
 
     if (CheckCollisionWithMap(map)) {
