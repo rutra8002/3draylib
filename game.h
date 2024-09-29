@@ -15,6 +15,10 @@ private:
     void Update(float deltaTime);
     void Draw();
 
+#ifdef DEBUG_MODE
+    void DrawDebugMenu();
+#endif
+
     Player player;
     Camera3DWrapper camera;
     Map map;

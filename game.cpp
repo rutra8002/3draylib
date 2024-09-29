@@ -44,5 +44,15 @@ void Game::Draw() {
     DrawText("Move the cube with arrow keys", 10, 30, 20, DARKGRAY);
     DrawFPS(10, 10);
 
+    #ifdef DEBUG_MODE
+    DrawDebugMenu();
+    #endif
+
     EndDrawing();
 }
+
+#ifdef DEBUG_MODE
+void Game::DrawDebugMenu() {
+    DrawText("DEBUG MENU", 10, 50, 20, RED);
+}
+#endif
