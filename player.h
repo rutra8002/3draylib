@@ -10,9 +10,13 @@ public:
     void Update(float deltaTime);
     void Draw();
     Vector3 GetPosition() const;
+    float GetRotation() const;
 
 private:
+    void HandleMouseInput();
+
     Vector3 position;
+    float rotation;
 };
 
 #endif

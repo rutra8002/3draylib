@@ -24,7 +24,7 @@ void Game::Run() {
 
 void Game::Update(float deltaTime) {
     player.Update(deltaTime);
-    camera.SetPositionBehindPlayer(player.GetPosition());
+    camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation());
     camera.SetTargetToPlayer(player.GetPosition());
 }
 

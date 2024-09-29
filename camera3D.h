@@ -10,7 +10,7 @@ public:
     void SetTarget(Vector3 target);
     void BeginMode3D();
     void EndMode3D();
-    void SetPositionBehindPlayer(Vector3 playerPosition);
+    void SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation);
     void SetTargetToPlayer(Vector3 playerPosition);
 
 private:

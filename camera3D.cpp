@@ -1,4 +1,5 @@
 #include "Camera3D.h"
+#include "raymath.h"
 
 Camera3DWrapper::Camera3DWrapper() : camera{} {
     camera.position = {0.0f, 10.0f, 10.0f};
@@ -16,9 +17,10 @@ void Camera3DWrapper::SetTarget(Vector3 target) {
     camera.target = target;
 }
 
-void Camera3DWrapper::SetPositionBehindPlayer(Vector3 playerPosition) {
+void Camera3DWrapper::SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation) {
     Vector3 cameraPosition = playerPosition;
-    cameraPosition.z += 20.0f;
+    cameraPosition.z += 20.0f * cosf(playerRotation * DEG2RAD);
+    cameraPosition.x += 20.0f * sinf(playerRotation * DEG2RAD);
     cameraPosition.y += 10.0f;
     SetPosition(cameraPosition);
 }
