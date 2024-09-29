@@ -5,6 +5,16 @@
 #include "raylib.h"
 #include "Map.h"
 
+enum CollisionSide {
+    NO_COLLISION,
+    COLLISION_TOP,
+    COLLISION_BOTTOM,
+    COLLISION_LEFT,
+    COLLISION_RIGHT,
+    COLLISION_FRONT,
+    COLLISION_BACK
+};
+
 class Player {
 
 public:
@@ -18,7 +28,7 @@ public:
 
 private:
     void HandleMouseInput();
-    bool CheckCollisionWithMap(const Map& map);
+    CollisionSide CheckCollisionWithMap(const Map& map);
     void Jump();
 
     Vector3 position;
@@ -29,7 +39,7 @@ private:
     float vz;
     float gravity;
     bool isGrounded;
-    const float jumpSpeed = 15.0f; // Jump speed constant
+    const float jumpSpeed = 15.0f;
 };
 
 #endif
