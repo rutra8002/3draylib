@@ -71,29 +71,37 @@ CollisionSide Player::CheckCollisionWithMap(const Map& map) {
         };
 
         if (CheckCollisionBoxes(playerBox, cubeBox)) {
-            if (playerBox.min.y < cubeBox.max.y && playerBox.max.y > cubeBox.max.y) {
-                position.y = cubeBox.max.y + 1.0f;
-                return COLLISION_TOP;
-            }
-            if (playerBox.max.y > cubeBox.min.y && playerBox.min.y < cubeBox.min.y) {
-                position.y = cubeBox.min.y - 1.0f;
-                return COLLISION_BOTTOM;
-            }
-            if (playerBox.min.x < cubeBox.max.x && playerBox.max.x > cubeBox.max.x) {
-                position.x = cubeBox.max.x + 1.0f;
-                return COLLISION_LEFT;
-            }
-            if (playerBox.max.x > cubeBox.min.x && playerBox.min.x < cubeBox.min.x) {
-                position.x = cubeBox.min.x - 1.0f;
-                return COLLISION_RIGHT;
-            }
-            if (playerBox.min.z < cubeBox.max.z && playerBox.max.z > cubeBox.max.z) {
-                position.z = cubeBox.max.z + 1.0f;
-                return COLLISION_FRONT;
-            }
-            if (playerBox.max.z > cubeBox.min.z && playerBox.min.z < cubeBox.min.z) {
-                position.z = cubeBox.min.z - 1.0f;
-                return COLLISION_BACK;
+            float overlapX = std::min(playerBox.max.x - cubeBox.min.x, cubeBox.max.x - playerBox.min.x);
+            float overlapY = std::min(playerBox.max.y - cubeBox.min.y, cubeBox.max.y - playerBox.min.y);
+            float overlapZ = std::min(playerBox.max.z - cubeBox.min.z, cubeBox.max.z - playerBox.min.z);
+
+            if (overlapX < overlapY && overlapX < overlapZ) {
+                if (playerBox.min.x < cubeBox.max.x && playerBox.max.x > cubeBox.max.x) {
+                    position.x = cubeBox.max.x + 1.0f;
+                    return COLLISION_LEFT;
+                }
+                if (playerBox.max.x > cubeBox.min.x && playerBox.min.x < cubeBox.min.x) {
+                    position.x = cubeBox.min.x - 1.0f;
+                    return COLLISION_RIGHT;
+                }
+            } else if (overlapY < overlapX && overlapY < overlapZ) {
+                if (playerBox.min.y < cubeBox.max.y && playerBox.max.y > cubeBox.max.y) {
+                    position.y = cubeBox.max.y + 1.0f;
+                    return COLLISION_TOP;
+                }
+                if (playerBox.max.y > cubeBox.min.y && playerBox.min.y < cubeBox.min.y) {
+                    position.y = cubeBox.min.y - 1.0f;
+                    return COLLISION_BOTTOM;
+                }
+            } else {
+                if (playerBox.min.z < cubeBox.max.z && playerBox.max.z > cubeBox.max.z) {
+                    position.z = cubeBox.max.z + 1.0f;
+                    return COLLISION_FRONT;
+                }
+                if (playerBox.max.z > cubeBox.min.z && playerBox.min.z < cubeBox.min.z) {
+                    position.z = cubeBox.min.z - 1.0f;
+                    return COLLISION_BACK;
+                }
             }
         }
     }
