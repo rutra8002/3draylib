@@ -23,4 +23,6 @@ bool MainMenu::IsStartGameSelected() const {
 
 void MainMenu::CenterCursor() const {
     SetMousePosition(screenWidth / 2, screenHeight / 2);
+    HideCursor();
+    DisableCursor();
 }

@@ -1,4 +1,3 @@
-// game.cpp
 #include "Game.h"
 #include "raylib.h"
 
@@ -29,6 +28,8 @@ void Game::Run() {
         }
         Draw();
     }
+    EnableCursor();
+    ShowCursor();
 }
 
 void Game::Update(float deltaTime) {
