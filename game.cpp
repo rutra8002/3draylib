@@ -41,7 +41,7 @@ void Game::Draw() {
 
     camera.EndMode3D();
 
-    DrawText("Move the cube with arrow keys", 10, 30, 20, DARKGRAY);
+    DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);
     DrawFPS(10, 10);
 
     #ifdef DEBUG_MODE

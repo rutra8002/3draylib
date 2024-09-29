@@ -3,10 +3,10 @@
 Player::Player() : position({0.0f, 0.0f, 0.0f}) {}
 
 void Player::Update(float deltaTime) {
-    if (IsKeyDown(KEY_RIGHT)) position.x += 10 * deltaTime;
-    if (IsKeyDown(KEY_LEFT)) position.x -= 10 * deltaTime;
-    if (IsKeyDown(KEY_UP)) position.z -= 10 * deltaTime;
-    if (IsKeyDown(KEY_DOWN)) position.z += 10 * deltaTime;
+    if (IsKeyDown(KEY_D)) position.x += 10 * deltaTime;
+    if (IsKeyDown(KEY_A)) position.x -= 10 * deltaTime;
+    if (IsKeyDown(KEY_W)) position.z -= 10 * deltaTime;
+    if (IsKeyDown(KEY_S)) position.z += 10 * deltaTime;
 }
 
 void Player::Draw() {
