@@ -1,3 +1,4 @@
+// player.h
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -18,6 +19,7 @@ public:
 private:
     void HandleMouseInput();
     bool CheckCollisionWithMap(const Map& map);
+    void Jump();
 
     Vector3 position;
     float rotation;
@@ -27,6 +29,7 @@ private:
     float vz;
     float gravity;
     bool isGrounded;
+    const float jumpSpeed = 15.0f; // Jump speed constant
 };
 
 #endif

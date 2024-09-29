@@ -1,3 +1,4 @@
+// player.cpp
 #include "Player.h"
 #include "raymath.h"
 
@@ -24,6 +25,10 @@ void Player::Update(float deltaTime, const Map& map) {
         vz += 10 * cosf(-rotation * DEG2RAD);
     }
 
+    if (isGrounded && IsKeyPressed(KEY_SPACE)) {
+        Jump();
+    }
+
     position.x += vx * deltaTime;
     position.z += vz * deltaTime;
     position.y += vy * deltaTime;
@@ -42,11 +47,16 @@ void Player::Update(float deltaTime, const Map& map) {
     HandleMouseInput();
 }
 
+void Player::Jump() {
+    vy = jumpSpeed;
+    isGrounded = false;
+}
+
 bool Player::CheckCollisionWithMap(const Map& map) {
     for (const auto& cube : map.GetCubes()) {
         if (CheckCollisionBoxes(
             {position.x - 1.0f, position.y - 1.0f, position.z - 1.0f, position.x + 1.0f, position.y + 1.0f, position.z + 1.0f},
-            {cube.position.x - cube.dimensions.x / 2, cube.position.y, cube.position.z - cube.dimensions.z / 2, cube.position.x + cube.dimensions.x / 2, cube.position.y + cube.dimensions.y, cube.position.z + cube.dimensions.z / 2}
+            {cube.position.x - cube.dimensions.x / 2, cube.position.y - cube.dimensions.y / 2, cube.position.z - cube.dimensions.z / 2, cube.position.x + cube.dimensions.x / 2, cube.position.y + cube.dimensions.y / 2, cube.position.z + cube.dimensions.z / 2}
         )) {
             position.y = cube.position.y + cube.dimensions.y;
             return true;
