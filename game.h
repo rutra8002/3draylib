@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "Camera3D.h"
+#include "Map.h"
 
 class Game {
 public:
@@ -16,6 +17,7 @@ private:
 
     Player player;
     Camera3DWrapper camera;
+    Map map; // Add Map object
 };
 
 #endif

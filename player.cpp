@@ -13,3 +13,7 @@ void Player::Draw() {
     DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
     DrawCubeWires(position, 2.0f, 2.0f, 2.0f, MAROON);
 }
+
+Vector3 Player::GetPosition() const {
+    return position;
+}

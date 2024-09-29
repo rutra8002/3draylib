@@ -29,7 +29,9 @@ add_executable(${PROJECT_NAME} main.cpp
         player.cpp
         player.h
         camera3D.cpp
-        camera3D.h)
+        camera3D.h
+        map.cpp
+        map.h)
 target_link_libraries(${PROJECT_NAME} raylib)
 
 # Web Configurations
