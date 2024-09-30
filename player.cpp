@@ -2,7 +2,7 @@
 #include "player.h"
 #include "raymath.h"
 
-Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), isGrounded(false) {}
+Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), mass(3), isGrounded(false) {}
 
 void Player::Update(float deltaTime, const Map& map) {
     CollisionSide collisionSide = CheckCollisionWithMap(map);
@@ -48,7 +48,7 @@ void Player::Update(float deltaTime, const Map& map) {
     position.y += vy * deltaTime;
 
     if (!isGrounded) {
-        vy += gravity * deltaTime;
+        vy += gravity * mass * deltaTime;
     }
 
 

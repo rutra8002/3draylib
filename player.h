@@ -38,6 +38,7 @@ private:
     float vy;
     float vz;
     float gravity;
+    float mass;
     bool isGrounded;
     const float jumpSpeed = 15.0f;
 };
