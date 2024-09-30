@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "game.h"
 #include "raylib.h"
 
 Game::Game(int width, int height) : screenWidth(width), screenHeight(height), mainMenu(width, height), inGame(false) {

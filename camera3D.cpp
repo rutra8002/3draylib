@@ -1,4 +1,4 @@
-#include "Camera3D.h"
+#include "camera3D.h"
 #include "raymath.h"
 
 Camera3DWrapper::Camera3DWrapper() : camera{} {

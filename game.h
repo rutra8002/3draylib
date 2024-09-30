@@ -1,10 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Player.h"
-#include "Camera3D.h"
-#include "Map.h"
-#include "MainMenu.h"
+#include "player.h"
+#include "camera3D.h"
+#include "map.h"
+#include "mainmenu.h"
 
 class Game {
 public:

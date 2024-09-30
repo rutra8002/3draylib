@@ -3,7 +3,7 @@
 #define PLAYER_H
 
 #include "raylib.h"
-#include "Map.h"
+#include "map.h"
 
 enum CollisionSide {
     NO_COLLISION,

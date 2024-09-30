@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+#include "mainmenu.h"
 #include "raylib.h"
 
 MainMenu::MainMenu(int width, int height) : screenWidth(width), screenHeight(height), startGameSelected(false) {}
