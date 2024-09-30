@@ -5,6 +5,20 @@
 Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), isGrounded(false) {}
 
 void Player::Update(float deltaTime, const Map& map) {
+    CollisionSide collisionSide = CheckCollisionWithMap(map);
+    if (collisionSide == COLLISION_TOP) {
+        vy = 0;
+        isGrounded = true;
+    } else if (collisionSide == COLLISION_BOTTOM) {
+        vy = 0;
+    } else if (collisionSide == COLLISION_LEFT || collisionSide == COLLISION_RIGHT) {
+        vx = 0;
+    } else if (collisionSide == COLLISION_FRONT || collisionSide == COLLISION_BACK) {
+        vz = 0;
+    } else {
+        isGrounded = false;
+    }
+
     vx = 0.0f;
     vz = 0.0f;
 
@@ -25,7 +39,7 @@ void Player::Update(float deltaTime, const Map& map) {
         vz += 10 * cosf(-rotation * DEG2RAD);
     }
 
-    if (isGrounded && IsKeyPressed(KEY_SPACE)) {
+    if (isGrounded && IsKeyDown(KEY_SPACE)) {
         Jump();
     }
 
@@ -37,19 +51,6 @@ void Player::Update(float deltaTime, const Map& map) {
         vy += gravity * deltaTime;
     }
 
-    CollisionSide collisionSide = CheckCollisionWithMap(map);
-    if (collisionSide == COLLISION_TOP) {
-        vy = 0;
-        isGrounded = true;
-    } else if (collisionSide == COLLISION_BOTTOM) {
-        vy = 0;
-    } else if (collisionSide == COLLISION_LEFT || collisionSide == COLLISION_RIGHT) {
-        vx = 0;
-    } else if (collisionSide == COLLISION_FRONT || collisionSide == COLLISION_BACK) {
-        vz = 0;
-    } else {
-        isGrounded = false;
-    }
 
     HandleMouseInput();
 }
