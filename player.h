@@ -4,6 +4,7 @@
 
 #include "raylib.h"
 #include "map.h"
+#include <vector>
 
 enum CollisionSide {
     NO_COLLISION,
@@ -28,7 +29,7 @@ public:
 
 private:
     void HandleMouseInput();
-    CollisionSide CheckCollisionWithMap(const Map& map);
+    std::vector<CollisionSide> CheckCollisionWithMap(const Map& map);
     void Jump();
 
     Vector3 position;
