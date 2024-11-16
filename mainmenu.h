@@ -1,5 +1,6 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
+#include "button.h"
 
 class MainMenu {
 public:
@@ -13,6 +14,7 @@ private:
     int screenWidth;
     int screenHeight;
     bool startGameSelected;
+    Button startButton;
 };
 
 #endif

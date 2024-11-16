@@ -1,10 +1,13 @@
 #include "mainmenu.h"
 #include "raylib.h"
 
-MainMenu::MainMenu(int width, int height) : screenWidth(width), screenHeight(height), startGameSelected(false) {}
+MainMenu::MainMenu(int width, int height)
+    : screenWidth(width), screenHeight(height), startGameSelected(false),
+      startButton(width / 2 - 100, height / 2, 200, 50, "Start Game", 20, DARKGRAY, LIGHTGRAY, GRAY, DARKGRAY) {}
 
 void MainMenu::Update() {
-    if (IsKeyPressed(KEY_ENTER)) {
+    startButton.Update();
+    if (startButton.IsClicked()) {
         startGameSelected = true;
     }
 }
@@ -12,8 +15,8 @@ void MainMenu::Update() {
 void MainMenu::Draw() {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    DrawText("MAIN MENU", screenWidth / 2 - MeasureText("MAIN MENU", 40) / 2, screenHeight / 2 - 50, 40, DARKGRAY);
-    DrawText("Press ENTER to Start", screenWidth / 2 - MeasureText("Press ENTER to Start", 20) / 2, screenHeight / 2, 20, DARKGRAY);
+    DrawText("MAIN MENU", screenWidth / 2 - MeasureText("MAIN MENU", 40) / 2, screenHeight / 2 - 100, 40, DARKGRAY);
+    startButton.Draw();
     EndDrawing();
 }
 
