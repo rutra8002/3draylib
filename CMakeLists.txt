@@ -40,6 +40,13 @@ add_executable(${PROJECT_NAME} main.cpp
         button.h)
 target_link_libraries(${PROJECT_NAME} raylib)
 
+add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/shaders
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
+)
+
 # Set the build type to Debug by default
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)

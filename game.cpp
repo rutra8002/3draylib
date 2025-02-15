@@ -7,9 +7,14 @@ Game::Game(int width, int height) : screenWidth(width), screenHeight(height), ma
     camera.SetPosition({0.0f, 10.0f, 10.0f});
     camera.SetTarget({0.0f, 0.0f, 0.0f});
     map.Initialize();
+
+    target = LoadRenderTexture(screenWidth, screenHeight);
+    bloomShader = LoadShader(0, "shaders/bloom.fs");
 }
 
 Game::~Game() {
+    UnloadShader(bloomShader);
+    UnloadRenderTexture(target);
     CloseWindow();
     CloseAudioDevice();
 }
@@ -43,7 +48,7 @@ void Game::Draw() {
     if (!inGame) {
         mainMenu.Draw();
     } else {
-        BeginDrawing();
+        BeginTextureMode(target);
         ClearBackground(RAYWHITE);
 
         camera.BeginMode3D();
@@ -51,14 +56,31 @@ void Game::Draw() {
         player.Draw();
         map.Draw();
 
+
+        camera.EndMode3D();
+
+        EndTextureMode();
+
+
+        BeginDrawing();
+        ClearBackground(BLANK);
+
+        BeginShaderMode(bloomShader);
+        DrawTextureRec(
+            target.texture,
+            {0, 0, (float)screenWidth, (float)-screenHeight},
+            {0, 0},
+            WHITE
+        );
+        EndShaderMode();
+
 #ifdef DEBUG_MODE
         map.DrawHitboxes();
 #endif
 
-        camera.EndMode3D();
-
         DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);
         DrawFPS(10, 10);
+
 
 #ifdef DEBUG_MODE
         DrawDebugMenu();
