@@ -14,6 +14,7 @@ public:
     Map();
     void Initialize();
     void Draw();
+    void DrawHitboxes() const;
     [[nodiscard]] const std::vector<Map::Cube>& GetCubes() const;
 
 private:

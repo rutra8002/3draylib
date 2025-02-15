@@ -51,6 +51,10 @@ void Game::Draw() {
         player.Draw();
         map.Draw();
 
+#ifdef DEBUG_MODE
+        map.DrawHitboxes();
+#endif
+
         camera.EndMode3D();
 
         DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);

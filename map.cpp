@@ -30,6 +30,18 @@ void Map::Draw() {
     }
 }
 
+void Map::DrawHitboxes() const {
+#ifdef DEBUG_MODE
+    for (const auto& cube : cubes) {
+        BoundingBox cubeBox = {
+            {cube.position.x - cube.dimensions.x / 2, cube.position.y - cube.dimensions.y / 2, cube.position.z - cube.dimensions.z / 2},
+            {cube.position.x + cube.dimensions.x / 2, cube.position.y + cube.dimensions.y / 2, cube.position.z + cube.dimensions.z / 2}
+        };
+        DrawBoundingBox(cubeBox, GREEN);
+    }
+#endif
+}
+
 const std::vector<Map::Cube>& Map::GetCubes() const {
     return cubes;
 }

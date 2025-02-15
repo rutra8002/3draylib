@@ -1,6 +1,7 @@
 // player.cpp
 #include "player.h"
 #include "raymath.h"
+#include "rlgl.h"
 
 Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), mass(3), isGrounded(false) {}
 
@@ -118,8 +119,20 @@ void Player::HandleMouseInput() {
 }
 
 void Player::Draw() {
-    DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
-    DrawCubeWires(position, 2.0f, 2.0f, 2.0f, MAROON);
+    rlPushMatrix();
+    rlTranslatef(position.x, position.y, position.z);
+    rlRotatef(rotation, 0.0f, 1.0f, 0.0f);
+    DrawCube({0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, RED);
+    DrawCubeWires({0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, MAROON);
+    rlPopMatrix();
+
+    #ifdef DEBUG_MODE
+        BoundingBox playerBox = {
+            {position.x - 1.0f, position.y - 1.0f, position.z - 1.0f},
+            {position.x + 1.0f, position.y + 1.0f, position.z + 1.0f}
+        };
+    DrawBoundingBox(playerBox, RED);
+    #endif
 }
 
 Vector3 Player::GetPosition() const {
