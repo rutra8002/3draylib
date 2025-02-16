@@ -1,7 +1,7 @@
 #include "camera3D.h"
 #include "raymath.h"
 
-Camera3DWrapper::Camera3DWrapper() : camera{}, currentMode(THIRD_PERSON_VIEW) {
+Camera3DWrapper::Camera3DWrapper() : camera{}, currentMode(THIRD_PERSON_VIEW), currentCameraPosition{0.0f, 0.0f, 0.0f} {
     camera.target = {0.0f, 0.0f, 0.0f};
     camera.up = {0.0f, 1.0f, 0.0f};
     camera.fovy = 70.0f;
@@ -9,11 +9,16 @@ Camera3DWrapper::Camera3DWrapper() : camera{}, currentMode(THIRD_PERSON_VIEW) {
 }
 
 void Camera3DWrapper::SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation) {
-    Vector3 cameraPosition = playerPosition;
-    cameraPosition.z += 20.0f * cosf(playerRotation * DEG2RAD);
-    cameraPosition.x += 20.0f * sinf(playerRotation * DEG2RAD);
-    cameraPosition.y += 10.0f * sinf(playerVerticalRotation * DEG2RAD);
-    SetPosition(cameraPosition);
+    Vector3 targetPosition = playerPosition;
+    targetPosition.z += 20.0f * cosf(playerRotation * DEG2RAD);
+    targetPosition.x += 20.0f * sinf(playerRotation * DEG2RAD);
+    targetPosition.y += 10.0f * sinf(playerVerticalRotation * DEG2RAD);
+
+    currentCameraPosition.x = Lerp(currentCameraPosition.x, targetPosition.x, 0.01f);
+    currentCameraPosition.y = Lerp(currentCameraPosition.y, targetPosition.y, 0.01f);
+    currentCameraPosition.z = Lerp(currentCameraPosition.z, targetPosition.z, 0.01f);
+
+    SetPosition(currentCameraPosition);
 }
 
 void Camera3DWrapper::SetFirstPersonView(Vector3 playerPosition, float playerRotation, float playerVerticalRotation) {

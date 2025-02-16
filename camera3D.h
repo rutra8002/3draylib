@@ -26,6 +26,7 @@ public:
 private:
     Camera camera;
     ViewMode currentMode;
+    Vector3 currentCameraPosition;
 };
 
 #endif
