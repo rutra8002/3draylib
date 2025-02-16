@@ -5,7 +5,7 @@ Game::Game(int width, int height)
     : screenWidth(width), screenHeight(height),
       mainMenu(width, height), settingsMenu(width, height),
       inGame(false), inSettings(false), inMainMenu(true),
-      bloomEnabled(true), skyEnabled(true) {
+      bloomEnabled(true), skyEnabled(true), isFirstPerson(false) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -48,6 +48,7 @@ void Game::Run() {
                 mainMenu.ResetSettingsSelected();
                 bloomEnabled = settingsMenu.IsBloomEnabled();
                 skyEnabled = settingsMenu.IsSkyEnabled();
+                isFirstPerson = settingsMenu.IsFirstPerson();
             }
         } else {
             Update(deltaTime);
@@ -60,9 +61,13 @@ void Game::Run() {
 
 void Game::Update(float deltaTime) {
     player.Update(deltaTime, map);
-    camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
-    camera.SetTargetToPlayer(player.GetPosition());
-    player.SetRotation(player.GetRotation());
+
+    if (isFirstPerson) {
+        camera.SetFirstPersonView(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
+    } else {
+        camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
+        camera.SetTargetToPlayer(player.GetPosition());
+    }
 }
 
 void Game::Draw() {

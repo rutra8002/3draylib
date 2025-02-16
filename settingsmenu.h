@@ -12,6 +12,7 @@ public:
     void ResetBackSelected();
     bool IsBloomEnabled() const;
     bool IsSkyEnabled() const;
+    bool IsFirstPerson() const;
 
 private:
     int screenWidth;
@@ -19,6 +20,8 @@ private:
     bool backSelected;
     bool bloomEnabled;
     bool skyEnabled;
+    bool firstPerson;
+    Button cameraToggleButton;
     Button backButton;
     Button bloomToggleButton;
     Button skyToggleButton;

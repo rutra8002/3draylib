@@ -3,6 +3,11 @@
 
 #include "raylib.h"
 
+enum ViewMode {
+    THIRD_PERSON_VIEW,
+    FIRST_PERSON_VIEW
+};
+
 class Camera3DWrapper {
 public:
     Camera3DWrapper();
@@ -11,12 +16,16 @@ public:
     void BeginMode3D();
     void EndMode3D();
     void SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation);
+    void SetFirstPersonView(Vector3 playerPosition, float playerRotation, float playerVerticalRotation);
     void SetTargetToPlayer(Vector3 playerPosition);
+    void ToggleCameraMode();
     [[nodiscard]] Vector3 GetPosition() const;
     [[nodiscard]] Vector3 GetTarget() const;
+    [[nodiscard]] ViewMode GetCurrentMode() const;
 
 private:
     Camera camera;
+    ViewMode currentMode;
 };
 
 #endif

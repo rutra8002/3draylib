@@ -18,6 +18,7 @@ public:
 private:
     void Update(float deltaTime);
     void Draw();
+    bool isFirstPerson;
 
 #ifdef DEBUG_MODE
     void DrawDebugMenu();
