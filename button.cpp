@@ -28,3 +28,7 @@ void Button::Draw() const {
 bool Button::IsClicked() const {
     return isClicked;
 }
+
+void Button::SetText(const std::string& newText) {
+    text = newText;
+}

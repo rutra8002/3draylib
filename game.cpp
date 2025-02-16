@@ -1,7 +1,7 @@
 #include "game.h"
 #include "raylib.h"
 
-Game::Game(int width, int height) : screenWidth(width), screenHeight(height), mainMenu(width, height), settingsMenu(width, height), inGame(false), inSettings(false), inMainMenu(true) {
+Game::Game(int width, int height) : screenWidth(width), screenHeight(height), mainMenu(width, height), settingsMenu(width, height), inGame(false), inSettings(false), inMainMenu(true), shaderEnabled(true) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -40,6 +40,7 @@ void Game::Run() {
                 inMainMenu = true;
                 settingsMenu.ResetBackSelected();
                 mainMenu.ResetSettingsSelected();
+                shaderEnabled = settingsMenu.IsShaderEnabled();
             }
         } else {
             Update(deltaTime);
@@ -80,14 +81,18 @@ void Game::Draw() {
         BeginDrawing();
         ClearBackground(BLANK);
 
-        BeginShaderMode(bloomShader);
+        if (shaderEnabled) {
+            BeginShaderMode(bloomShader);
+        }
         DrawTextureRec(
             target.texture,
             {0, 0, (float)screenWidth, (float)-screenHeight},
             {0, 0},
             WHITE
         );
-        EndShaderMode();
+        if (shaderEnabled) {
+            EndShaderMode();
+        }
 
 #ifdef DEBUG_MODE
         map.DrawHitboxes();

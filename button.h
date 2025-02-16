@@ -10,6 +10,7 @@ public:
     void Update();
     void Draw() const;
     bool IsClicked() const;
+    void SetText(const std::string& newText);
 
 private:
     Rectangle rect;

@@ -34,6 +34,7 @@ private:
     bool inGame;
     bool inSettings;
     bool inMainMenu;
+    bool shaderEnabled;
 };
 
 #endif
