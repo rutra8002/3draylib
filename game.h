@@ -1,11 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "raylib.h"  // Add this include
+#include "raylib.h"
 #include "player.h"
 #include "camera3D.h"
 #include "map.h"
 #include "mainmenu.h"
+#include "settingsmenu.h"
 
 class Game {
 public:
@@ -27,9 +28,12 @@ private:
     Camera3DWrapper camera;
     Map map;
     MainMenu mainMenu;
+    SettingsMenu settingsMenu;
     int screenWidth;
     int screenHeight;
     bool inGame;
+    bool inSettings;
+    bool inMainMenu;
 };
 
 #endif

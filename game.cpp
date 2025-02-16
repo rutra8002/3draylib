@@ -1,7 +1,7 @@
 #include "game.h"
 #include "raylib.h"
 
-Game::Game(int width, int height) : screenWidth(width), screenHeight(height), mainMenu(width, height), inGame(false) {
+Game::Game(int width, int height) : screenWidth(width), screenHeight(height), mainMenu(width, height), settingsMenu(width, height), inGame(false), inSettings(false), inMainMenu(true) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -22,11 +22,24 @@ Game::~Game() {
 void Game::Run() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
-        if (!inGame) {
+        if (inMainMenu) {
             mainMenu.Update();
             if (mainMenu.IsStartGameSelected()) {
                 mainMenu.CenterCursor();
                 inGame = true;
+                inMainMenu = false;
+            }
+            if (mainMenu.IsSettingsSelected()) {
+                inSettings = true;
+                inMainMenu = false;
+            }
+        } else if (inSettings) {
+            settingsMenu.Update();
+            if (settingsMenu.IsBackSelected()) {
+                inSettings = false;
+                inMainMenu = true;
+                settingsMenu.ResetBackSelected();
+                mainMenu.ResetSettingsSelected();
             }
         } else {
             Update(deltaTime);
@@ -45,8 +58,10 @@ void Game::Update(float deltaTime) {
 }
 
 void Game::Draw() {
-    if (!inGame) {
+    if (inMainMenu) {
         mainMenu.Draw();
+    } else if (inSettings) {
+        settingsMenu.Draw();
     } else {
         BeginTextureMode(target);
         ClearBackground(RAYWHITE);

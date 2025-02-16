@@ -37,7 +37,9 @@ add_executable(${PROJECT_NAME} main.cpp
         mainmenu.cpp
         mainmenu.h
         button.cpp
-        button.h)
+        button.h
+        settingsmenu.cpp
+        settingsmenu.h)
 target_link_libraries(${PROJECT_NAME} raylib)
 
 add_custom_command(
