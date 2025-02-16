@@ -14,6 +14,7 @@ public:
     ~Game();
     void Run();
 
+
 private:
     void Update(float deltaTime);
     void Draw();
@@ -23,6 +24,7 @@ private:
 #endif
 
     Shader bloomShader;
+    Shader skyShader;
     RenderTexture2D target;
     Player player;
     Camera3DWrapper camera;
@@ -34,7 +36,8 @@ private:
     bool inGame;
     bool inSettings;
     bool inMainMenu;
-    bool shaderEnabled;
+    bool bloomEnabled;
+    bool skyEnabled;
 };
 
 #endif

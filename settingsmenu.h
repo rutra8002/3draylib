@@ -10,15 +10,18 @@ public:
     void Draw();
     bool IsBackSelected() const;
     void ResetBackSelected();
-    bool IsShaderEnabled() const;
+    bool IsBloomEnabled() const;
+    bool IsSkyEnabled() const;
 
 private:
     int screenWidth;
     int screenHeight;
     bool backSelected;
-    bool shaderEnabled;
+    bool bloomEnabled;
+    bool skyEnabled;
     Button backButton;
-    Button shaderToggleButton;
+    Button bloomToggleButton;
+    Button skyToggleButton;
 };
 
 #endif

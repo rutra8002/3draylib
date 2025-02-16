@@ -1,7 +1,11 @@
 #include "game.h"
 #include "raylib.h"
 
-Game::Game(int width, int height) : screenWidth(width), screenHeight(height), mainMenu(width, height), settingsMenu(width, height), inGame(false), inSettings(false), inMainMenu(true), shaderEnabled(true) {
+Game::Game(int width, int height)
+    : screenWidth(width), screenHeight(height),
+      mainMenu(width, height), settingsMenu(width, height),
+      inGame(false), inSettings(false), inMainMenu(true),
+      bloomEnabled(true), skyEnabled(true) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -10,10 +14,12 @@ Game::Game(int width, int height) : screenWidth(width), screenHeight(height), ma
 
     target = LoadRenderTexture(screenWidth, screenHeight);
     bloomShader = LoadShader(0, "shaders/bloom.fs");
+    skyShader = LoadShader(0, "shaders/sky.fs");
 }
 
 Game::~Game() {
     UnloadShader(bloomShader);
+    UnloadShader(skyShader);
     UnloadRenderTexture(target);
     CloseWindow();
     CloseAudioDevice();
@@ -40,7 +46,8 @@ void Game::Run() {
                 inMainMenu = true;
                 settingsMenu.ResetBackSelected();
                 mainMenu.ResetSettingsSelected();
-                shaderEnabled = settingsMenu.IsShaderEnabled();
+                bloomEnabled = settingsMenu.IsBloomEnabled();
+                skyEnabled = settingsMenu.IsSkyEnabled();
             }
         } else {
             Update(deltaTime);
@@ -67,6 +74,12 @@ void Game::Draw() {
         BeginTextureMode(target);
         ClearBackground(RAYWHITE);
 
+        if (skyEnabled) {
+            BeginShaderMode(skyShader);
+            DrawTextureRec(target.texture, {0, 0, (float)screenWidth, (float)-screenHeight}, {0, 0}, WHITE);
+            EndShaderMode();
+        }
+
         camera.BeginMode3D();
 
         player.Draw();
@@ -79,9 +92,8 @@ void Game::Draw() {
 
 
         BeginDrawing();
-        ClearBackground(BLANK);
 
-        if (shaderEnabled) {
+        if (bloomEnabled) {
             BeginShaderMode(bloomShader);
         }
         DrawTextureRec(
@@ -90,7 +102,7 @@ void Game::Draw() {
             {0, 0},
             WHITE
         );
-        if (shaderEnabled) {
+        if (bloomEnabled) {
             EndShaderMode();
         }
 
