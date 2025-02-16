@@ -1,4 +1,3 @@
-// player.h
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -22,9 +21,9 @@ public:
     Player();
     void Update(float deltaTime, const Map& map);
     void Draw();
-    Vector3 GetPosition() const;
-    float GetRotation() const;
-    float GetVerticalRotation() const;
+    [[nodiscard]] Vector3 GetPosition() const;
+    [[nodiscard]] float GetRotation() const;
+    [[nodiscard]] float GetVerticalRotation() const;
     void SetRotation(float rotation);
 
 private:

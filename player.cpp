@@ -1,4 +1,3 @@
-// player.cpp
 #include "player.h"
 #include "raymath.h"
 #include "rlgl.h"
