@@ -13,7 +13,7 @@ void Player::Update(float deltaTime, const Map& map) {
             vy = 0;
             isGrounded = true;
         } else if (collisionSide == COLLISION_BOTTOM) {
-            vy = 0;
+            vy = -vy;
         } else if (collisionSide == COLLISION_LEFT || collisionSide == COLLISION_RIGHT) {
             vx = 0;
         } else if (collisionSide == COLLISION_FRONT || collisionSide == COLLISION_BACK) {
