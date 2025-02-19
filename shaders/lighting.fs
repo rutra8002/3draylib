@@ -4,6 +4,7 @@ in vec2 fragTexCoord;
 in vec4 fragColor;
 in vec3 fragPosition;
 in vec3 fragNormal;
+in vec4 fragObjectColor;
 
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
@@ -24,7 +25,7 @@ void main() {
     vec3 viewDir = normalize(viewPos - fragPosition);
 
     vec3 result = vec3(0.0);
-    vec3 baseColor = vec3(0.0, 0.0, 1.0); // Blue base color
+    vec3 baseColor = fragObjectColor.rgb; // Use the object's color
 
     // Ambient light
     float ambientStrength = 0.3;
