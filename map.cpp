@@ -77,7 +77,6 @@ void Map::Draw(const Vector3& cameraPos) {
     // Draw cubes
     for (const auto& cube : cubes) {
         DrawCube(cube.position, cube.dimensions.x, cube.dimensions.y, cube.dimensions.z, BLUE);
-        DrawCubeWires(cube.position, cube.dimensions.x, cube.dimensions.y, cube.dimensions.z, DARKBLUE);
     }
 
     EndShaderMode();
