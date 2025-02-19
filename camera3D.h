@@ -15,8 +15,8 @@ public:
     void SetTarget(Vector3 target);
     void BeginMode3D();
     void EndMode3D();
-    void SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation);
-    void SetFirstPersonView(Vector3 playerPosition, float playerRotation, float playerVerticalRotation);
+    void SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation, float deltaTime);
+    void SetFirstPersonView(Vector3 playerPosition, float playerRotation, float playerVerticalRotation, float deltaTime);
     void SetTargetToPlayer(Vector3 playerPosition);
     void ToggleCameraMode();
     [[nodiscard]] Vector3 GetPosition() const;

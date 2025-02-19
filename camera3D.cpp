@@ -8,20 +8,20 @@ Camera3DWrapper::Camera3DWrapper() : camera{}, currentMode(THIRD_PERSON_VIEW), c
     camera.projection = CAMERA_PERSPECTIVE;
 }
 
-void Camera3DWrapper::SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation) {
+void Camera3DWrapper::SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation, float deltaTime) {
     Vector3 targetPosition = playerPosition;
     targetPosition.z += 20.0f * cosf(playerRotation * DEG2RAD);
     targetPosition.x += 20.0f * sinf(playerRotation * DEG2RAD);
     targetPosition.y += 10.0f * sinf(playerVerticalRotation * DEG2RAD);
 
-    currentCameraPosition.x = Lerp(currentCameraPosition.x, targetPosition.x, 0.01f);
-    currentCameraPosition.y = Lerp(currentCameraPosition.y, targetPosition.y, 0.01f);
-    currentCameraPosition.z = Lerp(currentCameraPosition.z, targetPosition.z, 0.01f);
+    currentCameraPosition.x = Lerp(currentCameraPosition.x, targetPosition.x, 5.0f * deltaTime);
+    currentCameraPosition.y = Lerp(currentCameraPosition.y, targetPosition.y, 5.0f * deltaTime);
+    currentCameraPosition.z = Lerp(currentCameraPosition.z, targetPosition.z, 5.0f * deltaTime);
 
     SetPosition(currentCameraPosition);
 }
 
-void Camera3DWrapper::SetFirstPersonView(Vector3 playerPosition, float playerRotation, float playerVerticalRotation) {
+void Camera3DWrapper::SetFirstPersonView(Vector3 playerPosition, float playerRotation, float playerVerticalRotation, float deltaTime) {
     Vector3 cameraPosition = playerPosition;
     cameraPosition.y += 1.0f;
 

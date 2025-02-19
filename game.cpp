@@ -65,9 +65,9 @@ void Game::Update(float deltaTime) {
     player.Update(deltaTime, map);
 
     if (settingsMenu.IsFirstPerson()) {
-        camera.SetFirstPersonView(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
+        camera.SetFirstPersonView(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation(), deltaTime);
     } else {
-        camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
+        camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation(), deltaTime);
         camera.SetTargetToPlayer(player.GetPosition());
     }
 }
