@@ -123,7 +123,6 @@ void Player::Draw() {
     rlTranslatef(position.x, position.y, position.z);
     rlRotatef(rotation, 0.0f, 1.0f, 0.0f);
     DrawCube({0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, RED);
-    DrawCubeWires({0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, MAROON);
     rlPopMatrix();
     EndShaderMode();
 
