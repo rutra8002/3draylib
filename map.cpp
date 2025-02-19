@@ -80,6 +80,15 @@ void Map::Draw(const Vector3& cameraPos) {
     }
 
     EndShaderMode();
+    DrawHitboxes();
+}
+
+void Map::DrawLightRadius() const {
+#ifdef DEBUG_MODE
+    for (const auto& light : lights) {
+        DrawSphere(light.position, light.intensity/4, Fade(light.color, 0.7f));
+    }
+#endif
 }
 
 void Map::DrawHitboxes() const {
@@ -91,6 +100,7 @@ void Map::DrawHitboxes() const {
         };
         DrawBoundingBox(cubeBox, GREEN);
     }
+    DrawLightRadius();
 #endif
 }
 

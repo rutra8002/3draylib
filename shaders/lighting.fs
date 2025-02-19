@@ -10,7 +10,7 @@ uniform sampler2D texture0;
 uniform vec4 colDiffuse;
 uniform vec3 viewPos;
 
-#define MAX_LIGHTS 4
+#define MAX_LIGHTS 64
 uniform struct Light {
     vec3 position;
     vec3 color;

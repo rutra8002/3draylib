@@ -22,6 +22,7 @@ public:
     void InitializeLights();
     void Initialize();
     void Draw(const Vector3& cameraPos);
+    void DrawLightRadius() const;
     void DrawHitboxes() const;
     [[nodiscard]] const std::vector<Map::Cube>& GetCubes() const;
     [[nodiscard]] Shader GetLightingShader() const;
