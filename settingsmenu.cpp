@@ -3,9 +3,9 @@
 
 SettingsMenu::SettingsMenu(int width, int height)
     : screenWidth(width), screenHeight(height), backSelected(false),
-      bloomEnabled(true), skyEnabled(true), firstPerson(false),
+      bloomEnabled(false), skyEnabled(true), firstPerson(false),
       backButton(width / 2 - 100, height / 2 + 220, 200, 50, "Back", 20, DARKGRAY, LIGHTGRAY, GRAY, DARKGRAY),
-      bloomToggleButton(width / 2 - 100, height / 2 - 20, 200, 50, "Bloom: ON", 20, DARKGRAY, LIGHTGRAY, GRAY, DARKGRAY),
+      bloomToggleButton(width / 2 - 100, height / 2 - 20, 200, 50, "Bloom: OFF", 20, DARKGRAY, LIGHTGRAY, GRAY, DARKGRAY),
       skyToggleButton(width / 2 - 100, height / 2 + 40, 200, 50, "Sky: ON", 20, DARKGRAY, LIGHTGRAY, GRAY, DARKGRAY),
       cameraToggleButton(width / 2 - 100, height / 2 + 100, 200, 50, "Camera: Third Person", 20, DARKGRAY, LIGHTGRAY, GRAY, DARKGRAY) {}
 

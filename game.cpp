@@ -5,7 +5,7 @@ Game::Game(int width, int height)
     : screenWidth(width), screenHeight(height),
       mainMenu(width, height), settingsMenu(width, height),
       currentState(MAIN_MENU),
-      bloomEnabled(true), skyEnabled(true) {
+      bloomEnabled(false), skyEnabled(true) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -15,6 +15,8 @@ Game::Game(int width, int height)
     target = LoadRenderTexture(screenWidth, screenHeight);
     bloomShader = LoadShader(0, "shaders/bloom.fs");
     skyShader = LoadShader(0, "shaders/sky.fs");
+
+    player.SetLightingShader(map.GetLightingShader());
 }
 
 Game::~Game() {

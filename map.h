@@ -24,6 +24,7 @@ public:
     void Draw(const Vector3& cameraPos);
     void DrawHitboxes() const;
     [[nodiscard]] const std::vector<Map::Cube>& GetCubes() const;
+    [[nodiscard]] Shader GetLightingShader() const;
 
 private:
     std::vector<Cube> cubes;

@@ -25,6 +25,7 @@ public:
     [[nodiscard]] float GetRotation() const;
     [[nodiscard]] float GetVerticalRotation() const;
     void SetRotation(float rotation);
+    void SetLightingShader(Shader shader);
 
 private:
     void HandleMouseInput();
@@ -41,6 +42,7 @@ private:
     float mass;
     bool isGrounded;
     const float jumpSpeed = 15.0f;
+    Shader lightingShader;
 };
 
 #endif

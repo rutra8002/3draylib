@@ -49,8 +49,8 @@ void Map::AddLight(const Vector3& position, const Color& color, float intensity)
 }
 
 void Map::InitializeLights() {
-    AddLight({0.0f, 10.0f, 0.0f}, WHITE, 1.0f);
-    AddLight({5.0f, 5.0f, 5.0f}, RED, 0.8f);
+    AddLight({-5.0f, 5.0f, -5.0f}, RED, 4.8f);
+    AddLight({5.0f, 5.0f, 5.0f}, GREEN, 4.8f);
 }
 
 void Map::Draw(const Vector3& cameraPos) {
@@ -96,4 +96,8 @@ void Map::DrawHitboxes() const {
 
 const std::vector<Map::Cube>& Map::GetCubes() const {
     return cubes;
+}
+
+Shader Map::GetLightingShader() const {
+    return lightingShader;
 }
