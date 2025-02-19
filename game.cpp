@@ -4,8 +4,8 @@
 Game::Game(int width, int height)
     : screenWidth(width), screenHeight(height),
       mainMenu(width, height), settingsMenu(width, height),
-      inGame(false), inSettings(false), inMainMenu(true),
-      bloomEnabled(true), skyEnabled(true), isFirstPerson(false) {
+      currentState(MAIN_MENU),
+      bloomEnabled(true), skyEnabled(true) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -28,30 +28,30 @@ Game::~Game() {
 void Game::Run() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
-        if (inMainMenu) {
-            mainMenu.Update();
-            if (mainMenu.IsStartGameSelected()) {
-                mainMenu.CenterCursor();
-                inGame = true;
-                inMainMenu = false;
-            }
-            if (mainMenu.IsSettingsSelected()) {
-                inSettings = true;
-                inMainMenu = false;
-            }
-        } else if (inSettings) {
-            settingsMenu.Update();
-            if (settingsMenu.IsBackSelected()) {
-                inSettings = false;
-                inMainMenu = true;
-                settingsMenu.ResetBackSelected();
-                mainMenu.ResetSettingsSelected();
-                bloomEnabled = settingsMenu.IsBloomEnabled();
-                skyEnabled = settingsMenu.IsSkyEnabled();
-                isFirstPerson = settingsMenu.IsFirstPerson();
-            }
-        } else {
-            Update(deltaTime);
+        switch (currentState) {
+            case MAIN_MENU:
+                mainMenu.Update();
+                if (mainMenu.IsStartGameSelected()) {
+                    mainMenu.CenterCursor();
+                    currentState = IN_GAME;
+                }
+                if (mainMenu.IsSettingsSelected()) {
+                    currentState = SETTINGS_MENU;
+                }
+                break;
+            case SETTINGS_MENU:
+                settingsMenu.Update();
+                if (settingsMenu.IsBackSelected()) {
+                    currentState = MAIN_MENU;
+                    settingsMenu.ResetBackSelected();
+                    mainMenu.ResetSettingsSelected();
+                    bloomEnabled = settingsMenu.IsBloomEnabled();
+                    skyEnabled = settingsMenu.IsSkyEnabled();
+                }
+                break;
+            case IN_GAME:
+                Update(deltaTime);
+                break;
         }
         Draw();
     }
@@ -62,7 +62,7 @@ void Game::Run() {
 void Game::Update(float deltaTime) {
     player.Update(deltaTime, map);
 
-    if (isFirstPerson) {
+    if (settingsMenu.IsFirstPerson()) {
         camera.SetFirstPersonView(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
     } else {
         camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation());
@@ -71,59 +71,61 @@ void Game::Update(float deltaTime) {
 }
 
 void Game::Draw() {
-    if (inMainMenu) {
-        mainMenu.Draw();
-    } else if (inSettings) {
-        settingsMenu.Draw();
-    } else {
-        BeginTextureMode(target);
-        ClearBackground(RAYWHITE);
+    switch (currentState) {
+        case MAIN_MENU:
+            mainMenu.Draw();
+            break;
+        case SETTINGS_MENU:
+            settingsMenu.Draw();
+            break;
+        case IN_GAME:
+            BeginTextureMode(target);
+            ClearBackground(RAYWHITE);
 
-        if (skyEnabled) {
-            BeginShaderMode(skyShader);
-            DrawTextureRec(target.texture, {0, 0, (float)screenWidth, (float)-screenHeight}, {0, 0}, WHITE);
-            EndShaderMode();
-        }
+            if (skyEnabled) {
+                BeginShaderMode(skyShader);
+                DrawTextureRec(target.texture, {0, 0, (float)screenWidth, (float)-screenHeight}, {0, 0}, WHITE);
+                EndShaderMode();
+            }
 
-        camera.BeginMode3D();
+            camera.BeginMode3D();
 
-        player.Draw();
-        map.Draw();
+            player.Draw();
+            map.Draw();
 
+            camera.EndMode3D();
 
-        camera.EndMode3D();
+            EndTextureMode();
 
-        EndTextureMode();
+            BeginDrawing();
 
-
-        BeginDrawing();
-
-        if (bloomEnabled) {
-            BeginShaderMode(bloomShader);
-        }
-        DrawTextureRec(
-            target.texture,
-            {0, 0, (float)screenWidth, (float)-screenHeight},
-            {0, 0},
-            WHITE
-        );
-        if (bloomEnabled) {
-            EndShaderMode();
-        }
-
-#ifdef DEBUG_MODE
-        map.DrawHitboxes();
-#endif
-
-        DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);
-        DrawFPS(10, 10);
-
+            if (bloomEnabled) {
+                BeginShaderMode(bloomShader);
+            }
+            DrawTextureRec(
+                target.texture,
+                {0, 0, (float)screenWidth, (float)-screenHeight},
+                {0, 0},
+                WHITE
+            );
+            if (bloomEnabled) {
+                EndShaderMode();
+            }
 
 #ifdef DEBUG_MODE
-        DrawDebugMenu();
+            map.DrawHitboxes();
 #endif
 
-        EndDrawing();
+            DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);
+            DrawFPS(10, 10);
+
+
+#ifdef DEBUG_MODE
+            DrawDebugMenu();
+#endif
+
+            EndDrawing();
+            break;
     }
 }
 

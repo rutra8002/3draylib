@@ -8,6 +8,12 @@
 #include "mainmenu.h"
 #include "settingsmenu.h"
 
+enum GameState {
+    MAIN_MENU,
+    SETTINGS_MENU,
+    IN_GAME
+};
+
 class Game {
 public:
     Game(int width, int height);
@@ -18,7 +24,6 @@ public:
 private:
     void Update(float deltaTime);
     void Draw();
-    bool isFirstPerson;
 
 #ifdef DEBUG_MODE
     void DrawDebugMenu();
@@ -34,9 +39,7 @@ private:
     SettingsMenu settingsMenu;
     int screenWidth;
     int screenHeight;
-    bool inGame;
-    bool inSettings;
-    bool inMainMenu;
+    GameState currentState;
     bool bloomEnabled;
     bool skyEnabled;
 };
