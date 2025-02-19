@@ -11,14 +11,30 @@ public:
         Vector3 dimensions;
     };
 
+    struct Light {
+        Vector3 position;
+        Color color;
+        float intensity;
+    };
+
     Map();
+    void AddLight(const Vector3& position, const Color& color, float intensity);
+    void InitializeLights();
     void Initialize();
-    void Draw();
+    void Draw(const Vector3& cameraPos);
     void DrawHitboxes() const;
     [[nodiscard]] const std::vector<Map::Cube>& GetCubes() const;
 
 private:
     std::vector<Cube> cubes;
+    std::vector<Light> lights;
+    static const int MAX_LIGHTS = 4;
+    Shader lightingShader;
+    int viewPosLoc;
+    int lightCountLoc;
+    int lightPositionLoc[MAX_LIGHTS];
+    int lightColorLoc[MAX_LIGHTS];
+    int lightIntensityLoc[MAX_LIGHTS];
 };
 
 #endif

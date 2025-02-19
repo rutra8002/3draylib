@@ -91,7 +91,7 @@ void Game::Draw() {
             camera.BeginMode3D();
 
             player.Draw();
-            map.Draw();
+            map.Draw(camera.GetPosition());
 
             camera.EndMode3D();
 
