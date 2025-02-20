@@ -25,7 +25,6 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 endif()
 
 add_executable(${PROJECT_NAME} main.cpp
-        game.h
         game.cpp
         game.h
         player.cpp
@@ -40,6 +39,7 @@ add_executable(${PROJECT_NAME} main.cpp
         button.h
         settingsmenu.cpp
         settingsmenu.h)
+
 target_link_libraries(${PROJECT_NAME} raylib)
 
 add_custom_command(
@@ -59,4 +59,12 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG_MODE)
 endif()
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
+# Apply static linking only for Windows
+if(WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
+else()
+    # Use dynamic linking on Linux and ensure Wayland support
+    set(CMAKE_EXE_LINKER_FLAGS "") # Remove static linking
+    set(GLFW_USE_WAYLAND ON)
+    set(GLFW_BUILD_X11 OFF) # Disable X11 support
+endif()
