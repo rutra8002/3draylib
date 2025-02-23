@@ -13,8 +13,8 @@ Game::Game(int width, int height)
     map.Initialize();
 
     target = LoadRenderTexture(screenWidth, screenHeight);
-    bloomShader = LoadShader(0, "shaders/bloom.fs");
-    skyShader = LoadShader(0, "shaders/sky.fs");
+    bloomShader = LoadShader(nullptr, "shaders/bloom.fs");
+    skyShader = LoadShader(nullptr, "shaders/sky.fs");
 
     player.SetLightingShader(map.GetLightingShader());
 }

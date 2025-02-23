@@ -14,7 +14,7 @@ public:
     void SetPosition(Vector3 position);
     void SetTarget(Vector3 target);
     void BeginMode3D();
-    void EndMode3D();
+    static void EndMode3D();
     void SetPositionBehindPlayer(Vector3 playerPosition, float playerRotation, float playerVerticalRotation, float deltaTime);
     void SetFirstPersonView(Vector3 playerPosition, float playerRotation, float playerVerticalRotation, float deltaTime);
     void SetTargetToPlayer(Vector3 playerPosition);

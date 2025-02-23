@@ -29,9 +29,9 @@ private:
     void DrawDebugMenu();
 #endif
 
-    Shader bloomShader;
-    Shader skyShader;
-    RenderTexture2D target;
+    Shader bloomShader{};
+    Shader skyShader{};
+    RenderTexture2D target{};
     Player player;
     Camera3DWrapper camera;
     Map map;

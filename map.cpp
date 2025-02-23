@@ -1,9 +1,8 @@
 #include "map.h"
 #include "raylib.h"
-#include "raymath.h"
 #include <cstdio>
 
-Map::Map() {}
+Map::Map() = default;
 
 void Map::Initialize() {
     cubes.push_back({{0.0f, -2.0f, 0.0f}, {200.0f, 2.0f, 200.0f}});

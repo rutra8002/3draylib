@@ -31,12 +31,12 @@ private:
     std::vector<Cube> cubes;
     std::vector<Light> lights;
     static const int MAX_LIGHTS = 4;
-    Shader lightingShader;
-    int viewPosLoc;
-    int lightCountLoc;
-    int lightPositionLoc[MAX_LIGHTS];
-    int lightColorLoc[MAX_LIGHTS];
-    int lightIntensityLoc[MAX_LIGHTS];
+    Shader lightingShader{};
+    int viewPosLoc{};
+    int lightCountLoc{};
+    int lightPositionLoc[MAX_LIGHTS]{};
+    int lightColorLoc[MAX_LIGHTS]{};
+    int lightIntensityLoc[MAX_LIGHTS]{};
 };
 
 #endif
