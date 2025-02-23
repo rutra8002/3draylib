@@ -42,6 +42,8 @@ private:
     float mass;
     bool isGrounded;
     const float jumpSpeed = 15.0f;
+    const float acceleration = 200.0f;
+    const float friction = 10.0f;
     Shader lightingShader{};
 };
 
