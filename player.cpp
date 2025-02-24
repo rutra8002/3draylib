@@ -22,23 +22,31 @@ void Player::Update(float deltaTime, const Map& map) {
     }
 
     float currentAcceleration = isGrounded ? acceleration : acceleration * 0.05f;
+    Vector3 movement = {0.0f, 0.0f, 0.0f};
 
     if (IsKeyDown(KEY_D)) {
-        vx += currentAcceleration * deltaTime * cosf(-rotation * DEG2RAD);
-        vz += currentAcceleration * deltaTime * sinf(-rotation * DEG2RAD);
+        movement.x += cosf(-rotation * DEG2RAD);
+        movement.z += sinf(-rotation * DEG2RAD);
     }
     if (IsKeyDown(KEY_A)) {
-        vx -= currentAcceleration * deltaTime * cosf(-rotation * DEG2RAD);
-        vz -= currentAcceleration * deltaTime * sinf(-rotation * DEG2RAD);
+        movement.x -= cosf(-rotation * DEG2RAD);
+        movement.z -= sinf(-rotation * DEG2RAD);
     }
     if (IsKeyDown(KEY_W)) {
-        vx += currentAcceleration * deltaTime * sinf(-rotation * DEG2RAD);
-        vz -= currentAcceleration * deltaTime * cosf(-rotation * DEG2RAD);
+        movement.x += sinf(-rotation * DEG2RAD);
+        movement.z -= cosf(-rotation * DEG2RAD);
     }
     if (IsKeyDown(KEY_S)) {
-        vx -= currentAcceleration * deltaTime * sinf(-rotation * DEG2RAD);
-        vz += currentAcceleration * deltaTime * cosf(-rotation * DEG2RAD);
+        movement.x -= sinf(-rotation * DEG2RAD);
+        movement.z += cosf(-rotation * DEG2RAD);
     }
+
+    if (Vector3Length(movement) > 0) {
+        movement = Vector3Normalize(movement);
+    }
+
+    vx += movement.x * currentAcceleration * deltaTime;
+    vz += movement.z * currentAcceleration * deltaTime;
 
     if (isGrounded) {
         vx -= vx * friction * deltaTime;
