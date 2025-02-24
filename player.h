@@ -21,6 +21,7 @@ public:
     Player();
     void Update(float deltaTime, const Map& map);
     void Draw();
+    [[nodiscard]] float GetSpeed() const;
     [[nodiscard]] Vector3 GetPosition() const;
     [[nodiscard]] float GetRotation() const;
     [[nodiscard]] float GetVerticalRotation() const;
@@ -42,8 +43,8 @@ private:
     float mass;
     bool isGrounded;
     const float jumpSpeed = 15.0f;
-    const float acceleration = 200.0f;
-    const float friction = 10.0f;
+    const float acceleration = 300.0f;
+    const float friction = 20.0f;
     Shader lightingShader{};
 };
 

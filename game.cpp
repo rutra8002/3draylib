@@ -149,5 +149,8 @@ void Game::DrawDebugMenu() {
 
     Vector2 playerRotation = {player.GetRotation(), player.GetVerticalRotation()};
     DrawText(TextFormat("Player Rotation: [X: %.2f, Y: %.2f]", playerRotation.x, playerRotation.y), 10, 200, 20, DARKGRAY);
+
+    float playerspeed = player.GetSpeed();
+    DrawText(TextFormat("Speed: %.2f", playerspeed), 10, 230, 20, DARKGRAY);
 }
 #endif

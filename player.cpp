@@ -139,6 +139,11 @@ void Player::Draw() {
     #endif
 }
 
+//get speed function
+float Player::GetSpeed() const {
+    return sqrt(vx * vx + vz * vz);
+}
+
 Vector3 Player::GetPosition() const {
     return position;
 }
