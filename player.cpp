@@ -157,7 +157,7 @@ void Player::Draw() {
     DrawModelEx(ironManModel,
                 Vector3{0, -1.0f, 0},  // Adjust Y position to align with ground
                 Vector3{0, 1, 0},      // Rotation axis
-                90.0f,                 // Rotate model to face forward (may need adjustment)
+                180.0f,
                 Vector3{modelScale, modelScale, modelScale},
                 WHITE);
 
