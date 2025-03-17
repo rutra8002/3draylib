@@ -2,8 +2,15 @@
 #include "raymath.h"
 #include "rlgl.h"
 
-Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f), vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), mass(3), isGrounded(false) {}
+Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f),
+                  vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), mass(3), isGrounded(false) {
+    modelScale = 0.03f;
+}
 
+void Player::Init() {
+    // Load model here, after Raylib is initialized
+    ironManModel = LoadModel("IronMan/IronMan.obj");
+}
 void Player::Update(float deltaTime, const Map& map) {
     std::vector<CollisionSide> collisionSides = CheckCollisionWithMap(map);
     isGrounded = false;
@@ -68,6 +75,10 @@ void Player::Update(float deltaTime, const Map& map) {
     HandleMouseInput();
 }
 
+Player::~Player() {
+    UnloadModel(ironManModel);
+}
+
 void Player::Jump() {
     vy = jumpSpeed;
     isGrounded = false;
@@ -130,11 +141,26 @@ void Player::HandleMouseInput() {
 }
 
 void Player::Draw() {
+    // Add a safety check
+    if (ironManModel.meshes == NULL) {
+        // Fallback to a simple cube if model isn't loaded
+        DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
+        return;
+    }
+
     BeginShaderMode(lightingShader);
     rlPushMatrix();
     rlTranslatef(position.x, position.y, position.z);
     rlRotatef(rotation, 0.0f, 1.0f, 0.0f);
-    DrawCube({0.0f, 0.0f, 0.0f}, 2.0f, 2.0f, 2.0f, RED);
+
+    // Draw Iron Man model instead of cube
+    DrawModelEx(ironManModel,
+                Vector3{0, -1.0f, 0},  // Adjust Y position to align with ground
+                Vector3{0, 1, 0},      // Rotation axis
+                90.0f,                 // Rotate model to face forward (may need adjustment)
+                Vector3{modelScale, modelScale, modelScale},
+                WHITE);
+
     rlPopMatrix();
     EndShaderMode();
 

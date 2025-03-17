@@ -16,6 +16,7 @@ Game::Game(int width, int height)
     bloomShader = LoadShader(nullptr, "shaders/bloom.fs");
     skyShader = LoadShader(nullptr, "shaders/sky.fs");
 
+    player.Init();
     player.SetLightingShader(map.GetLightingShader());
 }
 

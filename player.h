@@ -19,6 +19,8 @@ class Player {
 
 public:
     Player();
+    ~Player();
+    void Init();
     void Update(float deltaTime, const Map& map);
     void Draw();
     [[nodiscard]] float GetSpeed() const;
@@ -46,6 +48,8 @@ private:
     const float acceleration = 300.0f;
     const float friction = 20.0f;
     Shader lightingShader{};
+    Model ironManModel{};
+    float modelScale{0.1f};
 };
 
 #endif

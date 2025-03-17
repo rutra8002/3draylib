@@ -49,6 +49,13 @@ add_custom_command(
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
 )
 
+add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/IronMan
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/IronMan
+)
+
 # Set the build type to Debug by default
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
