@@ -9,7 +9,9 @@ Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotatio
 
 void Player::Init() {
     // Load model here, after Raylib is initialized
-    ironManModel = LoadModel("IronMan/IronMan.obj");
+
+    //NAH
+    // ironManModel = LoadModel("IronMan/IronMan.obj");
 }
 void Player::Update(float deltaTime, const Map& map) {
     std::vector<CollisionSide> collisionSides = CheckCollisionWithMap(map);
@@ -141,25 +143,12 @@ void Player::HandleMouseInput() {
 }
 
 void Player::Draw() {
-    // Add a safety check
-    if (ironManModel.meshes == NULL) {
-        // Fallback to a simple cube if model isn't loaded
-        DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
-        return;
-    }
+    DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
 
     BeginShaderMode(lightingShader);
     rlPushMatrix();
     rlTranslatef(position.x, position.y, position.z);
     rlRotatef(rotation, 0.0f, 1.0f, 0.0f);
-
-    // Draw Iron Man model instead of cube
-    DrawModelEx(ironManModel,
-                Vector3{0, -1.0f, 0},  // Adjust Y position to align with ground
-                Vector3{0, 1, 0},      // Rotation axis
-                180.0f,
-                Vector3{modelScale, modelScale, modelScale},
-                WHITE);
 
     rlPopMatrix();
     EndShaderMode();
