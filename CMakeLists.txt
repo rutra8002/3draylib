@@ -24,21 +24,16 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
     endif()
 endif()
 
+include_directories(game player camera map menu)
+
 add_executable(${PROJECT_NAME} main.cpp
-        game.cpp
-        game.h
-        player.cpp
-        player.h
-        camera3D.cpp
-        camera3D.h
-        map.cpp
-        map.h
-        mainmenu.cpp
-        mainmenu.h
-        button.cpp
-        button.h
-        settingsmenu.cpp
-        settingsmenu.h)
+        game/game.cpp
+        player/player.cpp
+        camera/camera3D.cpp
+        map/map.cpp
+        menu/mainmenu.cpp
+        menu/button.cpp
+        menu/settingsmenu.cpp)
 
 target_link_libraries(${PROJECT_NAME} raylib)
 
