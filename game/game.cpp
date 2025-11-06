@@ -1,5 +1,6 @@
 #include "game.h"
 #include "raylib.h"
+#include "GameObject.h"
 
 Game::Game(int width, int height)
     : screenWidth(width), screenHeight(height),
@@ -16,13 +17,29 @@ Game::Game(int width, int height)
     bloomShader = LoadShader(nullptr, "shaders/bloom.fs");
     skyShader = LoadShader(nullptr, "shaders/sky.fs");
 
+    lightingShader = LoadShader("shaders/lighting.vs", "shaders/lighting.fs");
+    viewPosLoc = GetShaderLocation(lightingShader, "viewPos");
+    lightCountLoc = GetShaderLocation(lightingShader, "lightCount");
+    for (int i = 0; i < MAX_LIGHTS; i++) {
+        char posName[32], colorName[32], intensityName[32];
+        sprintf(posName, "lights[%i].position", i);
+        sprintf(colorName, "lights[%i].color", i);
+        sprintf(intensityName, "lights[%i].intensity", i);
+        lightPositionLoc[i] = GetShaderLocation(lightingShader, posName);
+        lightColorLoc[i] = GetShaderLocation(lightingShader, colorName);
+        lightIntensityLoc[i] = GetShaderLocation(lightingShader, intensityName);
+    }
+    InitializeLights();
+
     player.Init();
-    player.SetLightingShader(map.GetLightingShader());
+    gameObjects.push_back(&map);
+    gameObjects.push_back(&player);
 }
 
 Game::~Game() {
     UnloadShader(bloomShader);
     UnloadShader(skyShader);
+    UnloadShader(lightingShader);
     UnloadRenderTexture(target);
     CloseWindow();
     CloseAudioDevice();
@@ -73,6 +90,24 @@ void Game::Update(float deltaTime) {
     }
 }
 
+void Game::ApplyLightingUniforms(const Vector3& cameraPos) {
+    Vector3 camPos = cameraPos;
+    SetShaderValue(lightingShader, viewPosLoc, &camPos, SHADER_UNIFORM_VEC3);
+    int lightCount = (int)lights.size();
+    SetShaderValue(lightingShader, lightCountLoc, &lightCount, SHADER_UNIFORM_INT);
+
+    for (size_t i = 0; i < lights.size() && i < MAX_LIGHTS; i++) {
+        SetShaderValue(lightingShader, lightPositionLoc[i], &lights[i].position, SHADER_UNIFORM_VEC3);
+        Vector3 lightColor = {
+            (float)lights[i].color.r / 255.0f,
+            (float)lights[i].color.g / 255.0f,
+            (float)lights[i].color.b / 255.0f
+        };
+        SetShaderValue(lightingShader, lightColorLoc[i], &lightColor, SHADER_UNIFORM_VEC3);
+        SetShaderValue(lightingShader, lightIntensityLoc[i], &lights[i].intensity, SHADER_UNIFORM_FLOAT);
+    }
+}
+
 void Game::Draw() {
     switch (currentState) {
         case MAIN_MENU:
@@ -93,10 +128,19 @@ void Game::Draw() {
 
             camera.BeginMode3D();
 
-            player.Draw();
-            map.Draw(camera.GetPosition());
+            // Lighting shader
+            BeginShaderMode(lightingShader);
+            ApplyLightingUniforms(camera.GetPosition());
+            for (GameObject* obj : gameObjects) {
+                obj->Draw();
+            }
+            EndShaderMode();
 
-            camera.EndMode3D();
+#ifdef DEBUG_MODE
+            DrawLightRadius();
+#endif
+
+            Camera3DWrapper::EndMode3D();
 
             EndTextureMode();
 
@@ -132,6 +176,15 @@ void Game::Draw() {
     }
 }
 
+void Game::AddLight(const Vector3& position, const Color& color, float intensity) {
+    lights.push_back({position, color, intensity});
+}
+
+void Game::InitializeLights() {
+    AddLight({-5.0f, 5.0f, -5.0f}, RED, 4.8f);
+    AddLight({5.0f, 5.0f, 5.0f}, GREEN, 4.8f);
+}
+
 #ifdef DEBUG_MODE
 void Game::DrawDebugMenu() {
     DrawText("DEBUG MENU", 10, 50, 20, RED);
@@ -153,5 +206,20 @@ void Game::DrawDebugMenu() {
 
     float playerspeed = player.GetSpeed();
     DrawText(TextFormat("Speed: %.2f", playerspeed), 10, 230, 20, DARKGRAY);
+
+    DrawText("Game Objects:", 10, 260, 20, RED);
+
+    int startY = 290;
+    int lineHeight = 30;
+    for (size_t i = 0; i < gameObjects.size(); ++i) {
+        const GameObject* obj = gameObjects[i];
+        DrawText(TextFormat("%zu: %s", i, obj->GetName().c_str()), 10, startY + i * lineHeight, 20, DARKGRAY);
+    }
+}
+
+void Game::DrawLightRadius() const {
+    for (const auto& light : lights) {
+        DrawSphere(light.position, light.intensity/4, Fade(light.color, 0.7f));
+    }
 }
 #endif

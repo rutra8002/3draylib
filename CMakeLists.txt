@@ -24,7 +24,7 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
     endif()
 endif()
 
-include_directories(game player camera map menu)
+include_directories(game player camera map menu gameobject)
 
 add_executable(${PROJECT_NAME} main.cpp
         game/game.cpp

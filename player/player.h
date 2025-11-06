@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "map.h"
 #include <vector>
+#include "GameObject.h"
 
 enum CollisionSide {
     NO_COLLISION,
@@ -15,20 +16,20 @@ enum CollisionSide {
     COLLISION_BACK
 };
 
-class Player {
+class Player : public GameObject {
 
 public:
     Player();
     ~Player();
-    void Init();
+    void Init() override;
     void Update(float deltaTime, const Map& map);
-    void Draw();
+    void Draw() override;
     [[nodiscard]] float GetSpeed() const;
     [[nodiscard]] Vector3 GetPosition() const;
     [[nodiscard]] float GetRotation() const;
     [[nodiscard]] float GetVerticalRotation() const;
     void SetRotation(float rotation);
-    void SetLightingShader(Shader shader);
+    std::string GetName() const override { return "Player"; }
 
 private:
     void HandleMouseInput();
@@ -47,7 +48,6 @@ private:
     const float jumpSpeed = 15.0f;
     const float acceleration = 300.0f;
     const float friction = 20.0f;
-    Shader lightingShader{};
     Model ironManModel{};
     float modelScale{0.1f};
 };

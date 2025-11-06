@@ -145,13 +145,10 @@ void Player::HandleMouseInput() {
 void Player::Draw() {
     DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
 
-    BeginShaderMode(lightingShader);
     rlPushMatrix();
     rlTranslatef(position.x, position.y, position.z);
     rlRotatef(rotation, 0.0f, 1.0f, 0.0f);
-
     rlPopMatrix();
-    EndShaderMode();
 
     #ifdef DEBUG_MODE
         BoundingBox playerBox = {
@@ -181,8 +178,4 @@ float Player::GetVerticalRotation() const {
 
 void Player::SetRotation(float newRotation) {
     rotation = newRotation;
-}
-
-void Player::SetLightingShader(Shader shader) {
-    lightingShader = shader;
 }
