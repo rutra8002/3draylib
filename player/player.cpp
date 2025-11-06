@@ -2,9 +2,10 @@
 #include "raymath.h"
 #include "rlgl.h"
 
-Player::Player() : position({0.0f, 0.0f, 0.0f}), rotation(0.0f), verticalRotation(0.0f),
+Player::Player() : rotation(0.0f), verticalRotation(0.0f),
                   vx(0.0f), vy(0.0f), vz(0.0f), gravity(-9.8f), mass(3), isGrounded(false) {
     modelScale = 0.03f;
+    position = {0.0f, 0.0f, 0.0f};
 }
 
 void Player::Init() {
@@ -13,7 +14,13 @@ void Player::Init() {
     //NAH
     // ironManModel = LoadModel("IronMan/IronMan.obj");
 }
-void Player::Update(float deltaTime, const Map& map) {
+
+void Player::Update(float deltaTime) {
+    // Base update without map collision
+    HandleMouseInput();
+}
+
+void Player::UpdateWithMap(float deltaTime, const Map& map) {
     std::vector<CollisionSide> collisionSides = CheckCollisionWithMap(map);
     isGrounded = false;
 
@@ -145,7 +152,19 @@ void Player::HandleMouseInput() {
 void Player::Draw() {
     DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
 
-    BeginShaderMode(lightingShader);
+    #ifdef DEBUG_MODE
+        BoundingBox playerBox = {
+            {position.x - 1.0f, position.y - 1.0f, position.z - 1.0f},
+            {position.x + 1.0f, position.y + 1.0f, position.z + 1.0f}
+        };
+    DrawBoundingBox(playerBox, RED);
+    #endif
+}
+
+void Player::DrawWithShader(Shader shader) {
+    DrawCube(position, 2.0f, 2.0f, 2.0f, RED);
+
+    BeginShaderMode(shader);
     rlPushMatrix();
     rlTranslatef(position.x, position.y, position.z);
     rlRotatef(rotation, 0.0f, 1.0f, 0.0f);
@@ -167,10 +186,6 @@ float Player::GetSpeed() const {
     return sqrt(vx * vx + vz * vz);
 }
 
-Vector3 Player::GetPosition() const {
-    return position;
-}
-
 float Player::GetRotation() const {
     return rotation;
 }
@@ -181,8 +196,4 @@ float Player::GetVerticalRotation() const {
 
 void Player::SetRotation(float newRotation) {
     rotation = newRotation;
-}
-
-void Player::SetLightingShader(Shader shader) {
-    lightingShader = shader;
 }

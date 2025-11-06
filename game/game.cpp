@@ -1,5 +1,6 @@
 #include "game.h"
 #include "raylib.h"
+#include <cstdio>
 
 Game::Game(int width, int height)
     : screenWidth(width), screenHeight(height),
@@ -15,14 +16,16 @@ Game::Game(int width, int height)
     target = LoadRenderTexture(screenWidth, screenHeight);
     bloomShader = LoadShader(nullptr, "shaders/bloom.fs");
     skyShader = LoadShader(nullptr, "shaders/sky.fs");
+    
+    InitializeLighting();
 
     player.Init();
-    player.SetLightingShader(map.GetLightingShader());
 }
 
 Game::~Game() {
     UnloadShader(bloomShader);
     UnloadShader(skyShader);
+    UnloadShader(lightingShader);
     UnloadRenderTexture(target);
     CloseWindow();
     CloseAudioDevice();
@@ -63,7 +66,7 @@ void Game::Run() {
 }
 
 void Game::Update(float deltaTime) {
-    player.Update(deltaTime, map);
+    player.UpdateWithMap(deltaTime, map);
 
     if (settingsMenu.IsFirstPerson()) {
         camera.SetFirstPersonView(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation(), deltaTime);
@@ -71,6 +74,8 @@ void Game::Update(float deltaTime) {
         camera.SetPositionBehindPlayer(player.GetPosition(), player.GetRotation(), player.GetVerticalRotation(), deltaTime);
         camera.SetTargetToPlayer(player.GetPosition());
     }
+    
+    UpdateLightingUniforms(camera.GetPosition());
 }
 
 void Game::Draw() {
@@ -93,8 +98,8 @@ void Game::Draw() {
 
             camera.BeginMode3D();
 
-            player.Draw();
-            map.Draw(camera.GetPosition());
+            player.DrawWithShader(lightingShader);
+            map.DrawWithShader(lightingShader, camera.GetPosition());
 
             camera.EndMode3D();
 
@@ -117,6 +122,7 @@ void Game::Draw() {
 
 #ifdef DEBUG_MODE
             map.DrawHitboxes();
+            DrawLightRadius();
 #endif
 
             DrawText("Move the cube with WASD", 10, 30, 20, DARKGRAY);
@@ -154,4 +160,58 @@ void Game::DrawDebugMenu() {
     float playerspeed = player.GetSpeed();
     DrawText(TextFormat("Speed: %.2f", playerspeed), 10, 230, 20, DARKGRAY);
 }
+
+void Game::DrawLightRadius() const {
+    for (const auto& light : lights) {
+        DrawSphere(light.position, light.intensity/4, Fade(light.color, 0.7f));
+    }
+}
 #endif
+
+void Game::InitializeLighting() {
+    lightingShader = LoadShader("shaders/lighting.vs", "shaders/lighting.fs");
+    
+    // Get shader locations
+    viewPosLoc = GetShaderLocation(lightingShader, "viewPos");
+    lightCountLoc = GetShaderLocation(lightingShader, "lightCount");
+
+    // Get light uniform locations
+    for (int i = 0; i < MAX_LIGHTS; i++) {
+        char posName[32], colorName[32], intensityName[32];
+        sprintf(posName, "lights[%i].position", i);
+        sprintf(colorName, "lights[%i].color", i);
+        sprintf(intensityName, "lights[%i].intensity", i);
+
+        lightPositionLoc[i] = GetShaderLocation(lightingShader, posName);
+        lightColorLoc[i] = GetShaderLocation(lightingShader, colorName);
+        lightIntensityLoc[i] = GetShaderLocation(lightingShader, intensityName);
+    }
+    
+    // Initialize lights
+    AddLight({-5.0f, 5.0f, -5.0f}, RED, 4.8f);
+    AddLight({5.0f, 5.0f, 5.0f}, GREEN, 4.8f);
+}
+
+void Game::AddLight(const Vector3& position, const Color& color, float intensity) {
+    lights.push_back({position, color, intensity});
+}
+
+void Game::UpdateLightingUniforms(const Vector3& cameraPos) {
+    // Update shader uniforms
+    Vector3 camPos = cameraPos;
+    SetShaderValue(lightingShader, viewPosLoc, &camPos, SHADER_UNIFORM_VEC3);
+    int lightCount = lights.size();
+    SetShaderValue(lightingShader, lightCountLoc, &lightCount, SHADER_UNIFORM_INT);
+
+    // Update light uniforms
+    for (size_t i = 0; i < lights.size() && i < MAX_LIGHTS; i++) {
+        SetShaderValue(lightingShader, lightPositionLoc[i], &lights[i].position, SHADER_UNIFORM_VEC3);
+        Vector3 lightColor = {
+            (float)lights[i].color.r / 255.0f,
+            (float)lights[i].color.g / 255.0f,
+            (float)lights[i].color.b / 255.0f
+        };
+        SetShaderValue(lightingShader, lightColorLoc[i], &lightColor, SHADER_UNIFORM_VEC3);
+        SetShaderValue(lightingShader, lightIntensityLoc[i], &lights[i].intensity, SHADER_UNIFORM_FLOAT);
+    }
+}
