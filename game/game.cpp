@@ -5,8 +5,7 @@
 Game::Game(int width, int height)
     : screenWidth(width), screenHeight(height),
       mainMenu(width, height), settingsMenu(width, height),
-      currentState(MAIN_MENU),
-      bloomEnabled(false), skyEnabled(true) {
+      currentState(MAIN_MENU) {
     InitWindow(screenWidth, screenHeight, "hello world");
     InitAudioDevice();
     camera.SetPosition({0.0f, 10.0f, 10.0f});
@@ -14,8 +13,6 @@ Game::Game(int width, int height)
     map.Initialize();
 
     target = LoadRenderTexture(screenWidth, screenHeight);
-    bloomShader = LoadShader(nullptr, "shaders/bloom.fs");
-    skyShader = LoadShader(nullptr, "shaders/sky.fs");
 
     lightingShader = LoadShader("shaders/lighting.vs", "shaders/lighting.fs");
     viewPosLoc = GetShaderLocation(lightingShader, "viewPos");
@@ -37,8 +34,6 @@ Game::Game(int width, int height)
 }
 
 Game::~Game() {
-    UnloadShader(bloomShader);
-    UnloadShader(skyShader);
     UnloadShader(lightingShader);
     UnloadRenderTexture(target);
     CloseWindow();
@@ -65,8 +60,6 @@ void Game::Run() {
                     currentState = MAIN_MENU;
                     settingsMenu.ResetBackSelected();
                     mainMenu.ResetSettingsSelected();
-                    bloomEnabled = settingsMenu.IsBloomEnabled();
-                    skyEnabled = settingsMenu.IsSkyEnabled();
                 }
                 break;
             case IN_GAME:
@@ -120,12 +113,6 @@ void Game::Draw() {
             BeginTextureMode(target);
             ClearBackground(RAYWHITE);
 
-            if (skyEnabled) {
-                BeginShaderMode(skyShader);
-                DrawTextureRec(target.texture, {0, 0, (float)screenWidth, (float)-screenHeight}, {0, 0}, WHITE);
-                EndShaderMode();
-            }
-
             camera.BeginMode3D();
 
             // Lighting shader
@@ -146,18 +133,12 @@ void Game::Draw() {
 
             BeginDrawing();
 
-            if (bloomEnabled) {
-                BeginShaderMode(bloomShader);
-            }
             DrawTextureRec(
                 target.texture,
                 {0, 0, (float)screenWidth, (float)-screenHeight},
                 {0, 0},
                 WHITE
             );
-            if (bloomEnabled) {
-                EndShaderMode();
-            }
 
 #ifdef DEBUG_MODE
             map.DrawHitboxes();
@@ -213,7 +194,8 @@ void Game::DrawDebugMenu() {
     int lineHeight = 30;
     for (size_t i = 0; i < gameObjects.size(); ++i) {
         const GameObject* obj = gameObjects[i];
-        DrawText(TextFormat("%zu: %s", i, obj->GetName().c_str()), 10, startY + i * lineHeight, 20, DARKGRAY);
+        int yPos = startY + static_cast<int>(i) * lineHeight;
+        DrawText(TextFormat("%zu: %s", i, obj->GetName().c_str()), 10, yPos, 20, DARKGRAY);
     }
 }
 

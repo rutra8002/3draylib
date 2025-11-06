@@ -32,8 +32,6 @@ private:
     void DrawLightRadius() const;
 #endif
 
-    Shader bloomShader{};
-    Shader skyShader{};
     RenderTexture2D target{};
 
     struct Light {
@@ -64,8 +62,6 @@ private:
     int screenWidth;
     int screenHeight;
     GameState currentState;
-    bool bloomEnabled;
-    bool skyEnabled;
 };
 
 #endif
